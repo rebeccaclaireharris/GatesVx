@@ -138,10 +138,6 @@ Imatrix[1,2]<-sum(I[1,7:20],Iv[1,7:20])
 Imatrix[1,3]<-sum(I[1,21:65],Iv[1,21:65])
 Imatrix[1,4]<-sum(I[1,66:Mnage],Iv[1,66:Mnage])
 
-Imatno6080A[1,1]<-sum(I[1,21:60],Iv[1,21:60])
-Imatno6080B[1,1]<-sum(I[1,81:Mnage],Iv[1,81:Mnage])
-Imatno75up[1,1]<-sum(I[1,66:75],Iv[1,66:75])
-
 
 
 # Imatrix[1,1]<-sum(I0[1:6])
