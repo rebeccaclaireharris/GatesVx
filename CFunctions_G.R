@@ -321,7 +321,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       NI[i,2:Mnage] = NI[i-1,1:(Mnage-1)] + ((1 - CDR[1:(Mnage-1)]*CoT*e)*new_NI[i,2:Mnage]) - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NI[i-1,1:(Mnage-1)]*dt                    
       
     #crude estmate of CFR - #deaths/#prevalent cases
-     CFR[i,] = ((sum(uni[1:(Mnage-1)]*dt*NI[i-1,1:(Mnage-1)])) + (sum(ui[1:(Mnage-1)]*dt*I[i-1,1:(Mnage-1)])))/(sum(NI[i-1,1:(Mnage-1)]+I[i-1,1:(Mnage-1)]))       
+     CFR[i,] = ((sum(uni[1:(Mnage-1)]*dt*NI[i-1,1:(Mnage-1)])) + (sum(ui[1:(Mnage-1)]*dt*I[i-1,1:(Mnage-1)]))+(sum(uni[1:(Mnage-1)]*dt*NIv[i-1,1:(Mnage-1)])) + (sum(ui[1:(Mnage-1)]*dt*Iv[i-1,1:(Mnage-1)])))/(sum(NI[i-1,1:(Mnage-1)]+I[i-1,1:(Mnage-1)]+NIv[i-1,1:(Mnage-1)]+Iv[i-1,1:(Mnage-1)]))       
 
 
 
