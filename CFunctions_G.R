@@ -565,16 +565,31 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         #IH[i,15:Mnage] = IH[i-1,15:Mnage] + (1 - CDRH*CoTH)*(new_IH[i-1,15:Mnage]) - (nH + uH[15:Mnage] + uiHA)*IH[i-1,15:Mnage]*dt + hiv[15:Mnage]*I[i-1,15:Mnage]*dt
         #NIH[i,15:Mnage] = NIH[i-1,15:Mnage] + (1 - CDRH*CoTH)*(e*new_NIH[i-1,15:Mnage]) - (nH + uH[15:Mnage] + uniHA + w)*NIH[i-1,15:Mnage]*dt + hiv[15:Mnage]*NI[i-1,15:Mnage]*dt                
         
-        #### •••••••••••••••••••• VACCINE AGING •••••••••••••••••••••••••
+        #### •••••••••••••••••••• VACCINE AGING & transitions •••••••••••••••••••••••••
+#         Sv[i,1:Mnage] = Sv[i-1,1:Mnage] - (u[1:Mnage]+lambda[i-1,1:Mnage])*Sv[i-1,1:Mnage]*dt - lambda[i-1,1:Mnage]*(Sv[i-1,1:Mnage])*dt 
+#         Lv[i,1:Mnage] = Lv[i-1,1:Mnage] + lambda[i-1,1:Mnage]*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt - (u[1:Mnage])*Lv[i-1,1:Mnage]*dt 
+#         Rv[i,1:Mnage] = Rv[i-1,1:Mnage] - (u[1:Mnage])*Rv[i-1,1:Mnage]*dt - lambda[i-1,1:Mnage]*(g*Rv[i-1,1:Mnage])*dt
+#         
         
-        Sv[i,1:Mnage] = Sv[i-1,1:Mnage] - (u[1:Mnage])*Sv[i-1,1:Mnage]*dt - lambda[i-1,1:Mnage]*(Sv[i-1,1:Mnage])*dt 
-        Lv[i,1:Mnage] = Lv[i-1,1:Mnage] - (u[1:Mnage])*Lv[i-1,1:Mnage]*dt + lambda[i-1,1:Mnage]*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt 
-        Rv[i,1:Mnage] = Rv[i-1,1:Mnage] - (u[1:Mnage])*Rv[i-1,1:Mnage]*dt - lambda[i-1,1:Mnage]*(g*Rv[i-1,1:Mnage])*dt
+        Sv[i,1:Mnage] = Sv[i-1,1:Mnage] - (u[1:Mnage]+lambda[i-1,1:Mnage])*Sv[i-1,1:Mnage]*dt - lambda[i-1,1:Mnage]*(Sv[i-1,1:Mnage])*dt 
         
-        #SvH[i,15:Mnage] = SvH[i-1,15:Mnage] + hiv[15:Mnage]*Sv[i-1,15:Mnage]*dt - (uH[15:Mnage])*SvH[i-1,15:Mnage]*dt - lambda[i-1,1:Mnage]*(SvH[i-1,15:Mnage])*dt 
-        #LvH[i,15:Mnage] = LvH[i-1,15:Mnage] + hiv[15:Mnage]*Lv[i-1,15:Mnage]*dt - (uH[15:Mnage])*LvH[i-1,15:Mnage]*dt + lambda[i-1,1:Mnage]*(SvH[i-1,15:Mnage] + gHA*RvH[i-1,15:Mnage])*dt 
-        #RvH[i,15:Mnage] = RvH[i-1,15:Mnage] + hiv[15:Mnage]*Rv[i-1,15:Mnage]*dt - (uH[15:Mnage])*RvH[i-1,15:Mnage]*dt - lambda[i-1,1:Mnage]*(gHA*RvH[i-1,15:Mnage])*dt 
-        #print("done vacc")
+        Lv[i,1:Mnage] = Lv[i-1,1:Mnage] + lambda[i-1,1:Mnage]*(1 - p[1:Mnage])*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt - (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:Mnage]*x + u[1:Mnage])*Lv[i-1,1:Mnage]*dt   
+        
+        Rv[i,1:Mnage] = Rv[i-1,1:Mnage] + n[1:Mnage]*(Iv[i-1,1:(Mnage)] + NIv[i-1,1:(Mnage)])*dt + CDR[1:Mnage]*CoT*(new_Iv[i,1:Mnage] + e*new_NIv[i,1:Mnage]) - (r[1:Mnage] + g*lambda[i-1,1:Mnage] + u[1:Mnage])*Rv[i-1,1:(Mnage)]*dt 
+        
+        new_Iv[i,1:Mnage] = lambda[i-1,1:Mnage]*p[1:Mnage]*f[1:Mnage]*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:(Mnage)])*dt + (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:(Mnage)]*x)*f[1:(Mnage)]*Lv[i-1,1:Mnage]*dt + r[1:Mnage]*h[1:Mnage]*Rv[i-1,1:Mnage]*dt + w*NIv[i-1,1:Mnage]*dt
+        
+        new_Iv_noconv[i,1:Mnage] = lambda[i-1,1:Mnage]*p[1:Mnage]*f[1:Mnage]*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt + (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:Mnage]*x)*f[1:Mnage]*Lv[i-1,1:Mnage]*dt + r[1:Mnage]*h[1:Mnage]*Rv[i-1,1:Mnage]*dt
+                    
+                  
+        new_NIv[i,1:Mnage] = lambda[i-1,1:Mnage]*p[1:Mnage]*(1 - f[1:Mnage])*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt + (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:Mnage]*x)*(1 - f[1:Mnage])*Lv[i-1,1:Mnage]*dt + r[1:Mnage]*(1 - h[1:Mnage])*Rv[i-1,1:Mnage]*dt  
+
+
+        Iv[i,1:Mnage] = Iv[i-1,1:Mnage] + (1 - CDR[1:Mnage]*CoT)*new_Iv[i,1:Mnage] - (n[1:Mnage] + u[1:(Mnage)] + ui[1:Mnage])*Iv[i-1,1:Mnage]*dt
+        
+        NIv[i,1:Mnage] = NIv[i-1,1:Mnage] + (1 - CDR[1:Mnage]*CoT*e)*new_NIv[i,1:Mnage] - (n[1:Mnage] + u[1:Mnage] + uni[1:Mnage] + w)*NIv[i-1,1:(Mnage)]*dt   
+        
+
         ###•••••••••••••••••• Vaccine coverage and duration ••••••••••••••••
         # NUMBER OF VACCINES
         if(vaccine == 0){VX[i,1:3]<-0}
@@ -596,6 +611,8 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         S2 = S[i,] + Sv[i,]*(d[i,]*(1-thetaS[i,])) - thetaS[i,]*S[i,]  #should this theta be k???
         L2 = L[i,] + Lv[i,]*(d[i,]*(1-thetaL[i,])) - thetaL[i,]*L[i,]
         R2 = R[i,] + Rv[i,]*(d[i,]*(1-thetaR[i,])) - thetaR[i,]*R[i,]
+        I2 = I[i,] + Iv[i,]*d[i,] 
+        NI2 = NI[i,] + NIv[i,]*d[i,] 
         
         #SH2 = SH[i,] + SvH[i,]*(d[i,]*(1-theta[i,])) - thetaH[i,]*SH[i,]
         #LH2 = LH[i,] + LvH[i,]*(d[i,]*(1-theta[i,])) - thetaH[i,]*LH[i,]
@@ -604,6 +621,8 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         Sv2 = Sv[i,] - Sv[i,]*(d[i,]*(1-thetaS[i,])) + thetaS[i,]*S[i,]
         Lv2 = Lv[i,] - Lv[i,]*(d[i,]*(1-thetaL[i,])) + thetaL[i,]*L[i,]
         Rv2 = Rv[i,] - Rv[i,]*(d[i,]*(1-thetaR[i,])) + thetaR[i,]*R[i,]
+        Iv2 = Iv[i,] - Iv[i,]*(d[i,])
+        NIv2 = NIv[i,] - NIv[i,]*(d[i,])
         
         #SvH2 = SvH[i,] - SvH[i,]*(d[i,]*(1-thetaH[i,])) + thetaH[i,]*SH[i,]
         #LvH2 = LvH[i,] - LvH[i,]*(d[i,]*(1-thetaH[i,])) + thetaH[i,]*LH[i,]
@@ -621,8 +640,8 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         
         
         
-        S[i,]<-S2;L[i,]<-L2;R[i,]<-R2;       #SH[i,]<-SH2;LH[i,]<-LH2;RH[i,]<-RH2;
-        Sv[i,]<-Sv2;Lv[i,]<-Lv2;Rv[i,]<-Rv2; #SvH[i,]<-SvH2;LvH[i,]<-LvH2;RvH[i,]<-RvH2;
+        S[i,]<-S2;L[i,]<-L2;R[i,]<-R2;I[i,]<-I2;  NI[i,]<-NI2;     #SH[i,]<-SH2;LH[i,]<-LH2;RH[i,]<-RH2;
+        Sv[i,]<-Sv2;Lv[i,]<-Lv2;Rv[i,]<-Rv2;Iv[i,]<-Iv2;  NIv[i,]<-NIv2; #SvH[i,]<-SvH2;LvH[i,]<-LvH2;RvH[i,]<-RvH2;
         
         #print("end of eqns")
         ####•••••••••••••••••• Economic Output ••••••••••••••••••
@@ -912,6 +931,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
 
 
           ## (9) number newly infected ppl
+##NOT UPDATED
           TBInew[(k-year1+1),1]<-sum(new_infect[i1:i2,])
           TBInew[(k-year1+1),2]<-sum(new_infect[i1:i2,1:15])
           TBInew[(k-year1+1),3]<-sum(new_infect[i1:i2,16:55])
@@ -920,6 +940,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
           TBInew[(k-year1+1),6]<-sum(new_infect[i1:i2,56:Mnage])
 
           ##(9b) ARI - annual risk of infection
+###NOT UPDATED
           ARI[(k-year1+1),1]<-(sum(new_infect[i1:i2,]))/mean(psize[i1:i2])*100
           ARI[(k-year1+1),2]<-(sum(new_infect[i1:i2,1:15]))/mean(psize014[i1:i2])*100
           ARI[(k-year1+1),3]<-(sum(new_infect[i1:i2,16:55]))/mean(psize1554[i1:i2])*100
@@ -929,6 +950,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
 
           ## (10) proortion of prevalent cases by age
           ##needs fixing!
+###NOT UPDATED
           TBProp[(k-year1+1),1]<-sum(I[i1:i2,1:15])/sum(I[i1:i2])
           TBProp[(k-year1+1),2]<-sum(I[i1:i2,16:55])/sum(I[i1:i2])
           TBProp[(k-year1+1),3]<-sum(I[i1:i2,56:65])/sum(I[i1:i2])
@@ -937,6 +959,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
 
 
           #(11) to calc PAF - number of new infections
+###NOT UPDATED
           #I1990[1,]<-sum(new_infect[((1990-year1)*(1/dt)+1):((1990+1-year1)*(1/dt)),])
           #I2025[1,]<-sum(new_infect[((2025-year1)*(1/dt)+1):((2025+1-year1)*(1/dt)),])
           #I2050[1,]<-sum(new_infect[((2050-year1)*(1/dt)+1):((2050+1-year1)*(1/dt)),])
@@ -944,6 +967,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
 
 
           ###(12) New active cases and TB deaths per year
+###NOT UPDATED
           TBAc[(k-year1+1),1]<-sum(new_actv[i1:i2,])
 
           TBAc_age[(k-year1+1),1]<-sum(new_actv[i1:i2,1:15])
@@ -955,6 +979,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
           TBMo[(k-year1+1),1]<-sum(TBDeaths[i1:i2,])
 
           ##(13) number receiving vaccine
+###NOT UPDATED
           NV[(k-year1+1),1]<-sum(num_vac[i1:i2,])
 
 
