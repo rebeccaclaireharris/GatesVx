@@ -31,10 +31,12 @@ cntry<-"China"
 
 #### Vaccine interventions  ####
 typen<-9 ## Number of vaccine types (increased to 9 to inc latency vaccine and adult/ado vaccine)
-effs<-c(40,60,80)/100
-durs<-c(10,20)
-cover<-c(0.3,0.7)
-combn<-length(effs)*length(durs)*length(cover) ## Number of efficacy and duration combinations
+effI<-seq(0,100,10)/100
+effD<-seq(0,100,10)/100
+durs<-c(2,3,5,7,10,15,20,25,30,100)
+cover<-0.8  #routine coverage
+coverM<-0.7 #mass campaign coverage
+combn<-length(effI)*length(effM)*length(durs) ## Number of efficacy and duration combinations
 
 # Run Vaccines and where to store
 setwd(home);
