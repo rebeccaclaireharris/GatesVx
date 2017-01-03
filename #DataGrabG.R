@@ -14,7 +14,7 @@ suppressWarnings(library('gdata')) ## For drop.levels function
 #setwd("Data")
 
 # # Country lists (all, 22HBC, income groups)
-# countries <- as.matrix(read.csv('CountryList_22HBC.csv',check.names=F))     ## change this to actual list later
+countries <- as.matrix(read.csv('CountryList_22HBC.csv',check.names=F))     ## change this to actual list later
 # countries_22HBC <- as.matrix(read.csv('CountryList_22HBC.csv',check.names=F))      # 22HBC 
 # countries_LIC <- as.matrix(read.csv('CountryList_LIC.csv',check.names=F))[,1]      # LIC
 # countries_LMIC <- as.matrix(read.csv('CountryList_LMIC.csv',check.names=F))[,1]      # LMIC

@@ -1,7 +1,7 @@
 ## Vaccine matrix generation
 # Vaccine type is an input: Vx1 = infant, Vx2 = preexposure, Vx3 = postexposure
 # Efficacy (eff) and Duration (D) are separate inputs
-# Gives theta = proportion per time step of that age that move into the vaccine category (=eff*cov)
+# Gives theta = proportion per time step of that age that move into the vaccine category (=cov)
 # And d = matrix of ages vs times, 1 at (i,j) if at time j all those of age i have to leave the vaccine category
 
 

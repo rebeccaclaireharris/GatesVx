@@ -70,7 +70,7 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
   # save in big df for plot - original one
   
   #source('#BasicPlot.R')
-  setwd("Vaccoutput")
+  setwd("Vxoutput")
   write.table(Xn,paste('Xnbaseline',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
   setwd(home)
   

@@ -1071,7 +1071,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
   assign('TBPI',TBPI,envir=.GlobalEnv);assign('PSIZEy',PSIZEy,envir=.GlobalEnv);
   assign('TBRa',TBRa,envir=.GlobalEnv);assign('TBRi',TBRi,envir=.GlobalEnv); 
   assign('TBRa2',TBRa2,envir=.GlobalEnv);assign('TBRi2',TBRi2,envir=.GlobalEnv);
-  assign('TBInew',TBInew,envir=.GlobalEnv);assign('PGyng',PGyng,envir=.GlobalEnv);assign('PGold',PGold,envir=.GlobalEnv);
+  assign('TBInew',TBInew,envir=.GlobalEnv);
   assign('ARI',ARI,envir=.GlobalEnv);assign('TBAc',TBAc,envir=.GlobalEnv);assign('TBAc_age',TBAc_age,envir=.GlobalEnv); assign('TBMo',TBMo,envir=.GlobalEnv);assign('num_vac',num_vac,envir=.GlobalEnv); assign('NV',NV,envir=.GlobalEnv);
   assign('CDR',CDR,envir=.GlobalEnv);assign('CDR2010',CDR2010,envir=.GlobalEnv);
   #assign('CDRout',CDRout,envir=.GlobalEnv);
