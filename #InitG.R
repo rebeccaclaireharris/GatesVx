@@ -110,19 +110,19 @@ psize60plus[1]<-sum(S[1,61:Mnage],L[1,61:Mnage],R[1,61:Mnage],I[1,61:Mnage],NI[1
 psize55plus[1]<-sum(S[1,56:Mnage],L[1,56:Mnage],R[1,56:Mnage],I[1,56:Mnage],NI[1,56:Mnage],Sv[1,56:Mnage],Lv[1,56:Mnage],Rv[1,56:Mnage],Iv[1,56:Mnage],NIv[1,56:Mnage])
 psize55minus[1]<-sum(S[1,1:55],L[1,1:55],R[1,1:55],I[1,1:55],NI[1,1:55],Sv[1,1:55],Lv[1,1:55],Rv[1,1:55],Iv[1,1:55],NIv[1,1:55])
 
-psize0509[1]<-sum(S[i,6:10],L[i,6:10],R[i,6:10],I[i,6:10],NI[i,6:10],Sv[i,6:10],Lv[i,6:10],Rv[i,6:10],Iv[i,6:10],NIv[i,6:10])
-psize1019[1]<-sum(S[i,11:20],L[i,11:20],R[i,11:20],I[i,11:20],NI[i,11:20],Sv[i,11:20],Lv[i,11:20],Rv[i,11:20],Iv[i,11:20],NIv[i,11:20])
-psize2029[1]<-sum(S[i,21:30],L[i,21:30],R[i,21:30],I[i,21:30],NI[i,21:30],Sv[i,21:30],Lv[i,21:30],Rv[i,21:30],Iv[i,21:30],NIv[i,21:30])
-psize3039[1]<-sum(S[i,31:40],L[i,31:40],R[i,31:40],I[i,31:40],NI[i,31:40],Sv[i,31:40],Lv[i,31:40],Rv[i,31:40],Iv[i,31:40],NIv[i,31:40])
-psize4049[1]<-sum(S[i,41:50],L[i,41:50],R[i,41:50],I[i,41:50],NI[i,41:50],Sv[i,41:50],Lv[i,41:50],Rv[i,41:50],Iv[i,41:50],NIv[i,41:50])
-psize5059[1]<-sum(S[i,51:60],L[i,51:60],R[i,51:60],I[i,51:60],NI[i,51:60],Sv[i,51:60],Lv[i,51:60],Rv[i,51:60],Iv[i,51:60],NIv[i,51:60])
-psize6069[1]<-sum(S[i,61:70],L[i,61:70],R[i,61:70],I[i,61:70],NI[i,61:70],Sv[i,61:70],Lv[i,61:70],Rv[i,61:70],Iv[i,61:70],NIv[i,61:70])
-psize70plus[1]<-sum(S[i,71:Mnage],L[i,71:Mnage],R[i,71:Mnage],I[i,71:Mnage],NI[i,71:Mnage],Sv[i,71:Mnage],Lv[i,71:Mnage],Rv[i,71:Mnage],Iv[i,71:Mnage],NIv[i,71:Mnage])
-psize5574[1]<-sum(S[i,56:75],L[i,56:75],R[i,56:75],I[i,56:75],NI[i,56:75],Sv[i,56:75],Lv[i,56:75],Rv[i,56:75],Iv[i,56:75],NIv[i,56:75])
-psize75plus[1]<-sum(S[i,76:Mnage],L[i,76:Mnage],R[i,76:Mnage],I[i,76:Mnage],NI[i,76:Mnage],Sv[i,76:Mnage],Lv[i,76:Mnage],Rv[i,76:Mnage],Iv[i,76:Mnage],NIv[i,76:Mnage])
-psize1524[1]<-sum(S[i,16:25],L[i,16:25],R[i,16:25],I[i,16:25],NI[i,16:25],Sv[i,16:25],Lv[i,16:25],Rv[i,16:25],Iv[i,16:25],NIv[i,16:25])
-psize2554[1]<-sum(S[i,26:55],L[i,26:55],R[i,26:55],I[i,26:55],NI[i,26:55],Sv[i,26:55],Lv[i,26:55],Rv[i,26:55],Iv[i,26:55],NIv[i,26:55])
-psize15plus[1]<-sum(S[i,16:Mnage],L[i,16:Mnage],R[i,16:Mnage],I[i,16:Mnage],NI[i,16:Mnage],Sv[i,16:Mnage],Lv[i,16:Mnage],Rv[i,16:Mnage],Iv[i,16:Mnage],NIv[i,16:Mnage])
+psize0509[1]<-sum(S[1,6:10],L[1,6:10],R[1,6:10],I[1,6:10],NI[1,6:10],Sv[1,6:10],Lv[1,6:10],Rv[1,6:10],Iv[1,6:10],NIv[1,6:10])
+psize1019[1]<-sum(S[1,11:20],L[1,11:20],R[1,11:20],I[1,11:20],NI[1,11:20],Sv[1,11:20],Lv[1,11:20],Rv[1,11:20],Iv[1,11:20],NIv[1,11:20])
+psize2029[1]<-sum(S[1,21:30],L[1,21:30],R[1,21:30],I[1,21:30],NI[1,21:30],Sv[1,21:30],Lv[1,21:30],Rv[1,21:30],Iv[1,21:30],NIv[1,21:30])
+psize3039[1]<-sum(S[1,31:40],L[1,31:40],R[1,31:40],I[1,31:40],NI[1,31:40],Sv[1,31:40],Lv[1,31:40],Rv[1,31:40],Iv[1,31:40],NIv[1,31:40])
+psize4049[1]<-sum(S[1,41:50],L[1,41:50],R[1,41:50],I[1,41:50],NI[1,41:50],Sv[1,41:50],Lv[1,41:50],Rv[1,41:50],Iv[1,41:50],NIv[1,41:50])
+psize5059[1]<-sum(S[1,51:60],L[1,51:60],R[1,51:60],I[1,51:60],NI[1,51:60],Sv[1,51:60],Lv[1,51:60],Rv[1,51:60],Iv[1,51:60],NIv[1,51:60])
+psize6069[1]<-sum(S[1,61:70],L[1,61:70],R[1,61:70],I[1,61:70],NI[1,61:70],Sv[1,61:70],Lv[1,61:70],Rv[1,61:70],Iv[1,61:70],NIv[1,61:70])
+psize70plus[1]<-sum(S[1,71:Mnage],L[1,71:Mnage],R[1,71:Mnage],I[1,71:Mnage],NI[1,71:Mnage],Sv[1,71:Mnage],Lv[1,71:Mnage],Rv[1,71:Mnage],Iv[1,71:Mnage],NIv[1,71:Mnage])
+psize5574[1]<-sum(S[1,56:75],L[1,56:75],R[1,56:75],I[1,56:75],NI[1,56:75],Sv[i,56:75],Lv[1,56:75],Rv[1,56:75],Iv[1,56:75],NIv[1,56:75])
+psize75plus[1]<-sum(S[1,76:Mnage],L[1,76:Mnage],R[1,76:Mnage],I[1,76:Mnage],NI[1,76:Mnage],Sv[1,76:Mnage],Lv[1,76:Mnage],Rv[1,76:Mnage],Iv[1,76:Mnage],NIv[1,76:Mnage])
+psize1524[1]<-sum(S[1,16:25],L[1,16:25],R[1,16:25],I[1,16:25],NI[1,16:25],Sv[1,16:25],Lv[1,16:25],Rv[1,16:25],Iv[1,16:25],NIv[1,16:25])
+psize2554[1]<-sum(S[1,26:55],L[1,26:55],R[1,26:55],I[1,26:55],NI[1,26:55],Sv[1,26:55],Lv[1,26:55],Rv[1,26:55],Iv[1,26:55],NIv[1,26:55])
+psize15plus[1]<-sum(S[1,16:Mnage],L[1,16:Mnage],R[1,16:Mnage],I[1,16:Mnage],NI[1,16:Mnage],Sv[1,16:Mnage],Lv[1,16:Mnage],Rv[1,16:Mnage],Iv[1,16:Mnage],NIv[1,16:Mnage])
 
 
 
@@ -138,9 +138,9 @@ Imatrix[1,2]<-sum(I[1,7:20],Iv[1,7:20])
 Imatrix[1,3]<-sum(I[1,21:65],Iv[1,21:65])
 Imatrix[1,4]<-sum(I[1,66:Mnage],Iv[1,66:Mnage])
 
-Imatno6080A[1,1]<-sum(I[i,21:60],Iv[i,21:60])
-Imatno6080B[1,1]<-sum(I[i,81:Mnage],Iv[i,81:Mnage])
-Imatno75up[1,1]<-sum(I[i,66:75],Iv[i,66:75])
+Imatno6080A[1,1]<-sum(I[1,21:60],Iv[1,21:60])
+Imatno6080B[1,1]<-sum(I[1,81:Mnage],Iv[1,81:Mnage])
+Imatno75up[1,1]<-sum(I[1,66:75],Iv[1,66:75])
 
 
 
