@@ -31,12 +31,13 @@ cntry<-"China"
 
 #### Vaccine interventions  ####
 typen<-9 ## Number of vaccine types (increased to 9 to inc latency vaccine and adult/ado vaccine)
-effI<-seq(0,100,10)/100
-effD<-seq(0,100,10)/100
-durs<-c(2,3,5,7,10,15,20,25,30,100)
+effI<-seq(0,100,10)/100   #efficacy for POI
+effD<-seq(0,100,10)/100   #efficacy for POD
+durs<-c(2,3,5,7,10,15,20,30,100) #duration of protection (yrs)
 cover<-0.8  #routine coverage
 coverM<-0.7 #mass campaign coverage
-combn<-length(effI)*length(effM)*length(durs) ## Number of efficacy and duration combinations
+boost<-10   #spacing of booster campaigns
+combn<-length(effI)*length(effD)*length(durs) ## Number of efficacy and duration combinations
 
 # Run Vaccines and where to store
 setwd(home);
@@ -80,7 +81,7 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
   mort2050<-rbind(TBM[151,])
   
   
-  eee<-cbind(Xn,0,0,0,0,0); colnames(eee)<-c(colnames(Xn),"type","cov","VE","dur","count")
+  eee<-cbind(Xn,0,0,0,0,0); colnames(eee)<-c(colnames(Xn),"type","VE_I","VE_D","dur","count")
   #dfvx<-rbind(dfvx,eee)
   rrun_dfvx<-eee
   
@@ -89,18 +90,18 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
   for (nn in 2:typen){
     
     count<-0;coms<-matrix(0,combn,3);
-    #for each coverage
-    for (vv in 1:length(cover)){
-      # For each efficacy
-      for (zz in 1:length(effs)){
+    #for each POI efficacy
+    for (vv in 1:length(effI)){
+      # For each POD efficacy
+      for (zz in 1:length(effD)){
         # For each duration
         for (xx in 1:length(durs)){
           count<-count+1  
-          coms[count,]<-c(cover[vv],effs[zz],durs[xx])
-          cov<-cover[vv]; tic <- effs[zz];    toc <- durs[xx];   print(c(nn,cov,tic,toc))
+          coms[count,]<-c(effI[vv],effD[zz],durs[xx])
+          ticI <- effI[vv]; ticD <- effD[zz];   toc <- durs[xx];   print(c(nn,cov,ticI,ticD,toc))
         
           # Length of second input > 1 so triggers FitGo to do a vaccine scenario
-          X<-FitGo(cntry,c(nn,cov,tic,toc),c(p0,rmort,neta2,rmortTB,CDRscale,CDRscaleE,alpha),c(2,0.5,c(0.02,0.02,0.8,0.07)),c(1900,2050),0,C)  
+          X<-FitGo(cntry,c(nn,cover,coverM,ticI,ticD,toc,boost),c(p0,rmort,neta2,rmortTB,CDRscale,CDRscaleE,alpha),c(2,0.5,c(0.02,0.02,0.8,0.07)),c(1900,2050),0,C)  
           
           
           if (nn == 2){vtp<-"OA_PRI"
