@@ -4,6 +4,8 @@
 # Gives theta = proportion per time step of that age that move into the vaccine category (=eff*cov)
 # And d = matrix of ages vs times, 1 at (i,j) if at time j all those of age i have to leave the vaccine category
 
+#yest 
+
 # Year of introduction
 yrintro = 2025
 
