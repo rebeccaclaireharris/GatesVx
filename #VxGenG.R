@@ -4,7 +4,6 @@
 # Gives theta = proportion per time step of that age that move into the vaccine category (=eff*cov)
 # And d = matrix of ages vs times, 1 at (i,j) if at time j all those of age i have to leave the vaccine category
 
-#yest 
 
 # Year of introduction
 yrintro = 2025
@@ -165,11 +164,11 @@ if (D==10){
 
 
 if (vaccine == 1){
-  theta<-thetaV1*eff
+  theta<-thetaV1
   #thetaH<-matrix(0,steps,Mnage); # NO HIV positive babies
   d<-dV1
 } else if (vaccine == 2){
-  theta<-thetaV2*eff
+  theta<-thetaV2
   thetaS<-theta
   thetaL<-thetablank
   thetaR<-thetablank
@@ -178,44 +177,44 @@ if (vaccine == 1){
   d<-dV2
   #print(c('sumtheta',sum(theta)))
 } else if (vaccine == 3){
-  theta<-thetaV2*eff
+  theta<-thetaV2
   thetaS<-thetablank
   thetaL<-theta
   thetaR<-theta
   d<-dV2
 } else if (vaccine == 4){
-  theta<-thetaV2*eff
+  theta<-thetaV2
   thetaS<-theta
   thetaL<-theta
   thetaR<-theta
   d<-dV2 
 #ado/adult
 } else if (vaccine == 5){
-  theta<-thetaV4*eff
+  theta<-thetaV4
   thetaS<-theta
   thetaL<-thetablank
   thetaR<-thetablank
   d<-dV4
 } else if (vaccine == 6){
-  theta<-thetaV4*eff
+  theta<-thetaV4
   thetaS<-thetablank
   thetaL<-theta
   thetaR<-theta
   d<-dV4
 } else if (vaccine == 7){
-  theta<-thetaV4*eff
+  theta<-thetaV4
   thetaS<-theta
   thetaL<-theta
   thetaR<-theta
   d<-dV4
 } else if (vaccine == 8){
-  theta<-thetaV2*eff
+  theta<-thetaV2
   thetaS<-thetablank
   thetaL<-theta
   thetaR<-thetablank
   d<-dV2
 } else if (vaccine == 9){
-  theta<-thetaV4*eff
+  theta<-thetaV4
   thetaS<-thetablank
   thetaL<-theta
   thetaR<-thetablank
