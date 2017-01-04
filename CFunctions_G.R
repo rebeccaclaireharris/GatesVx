@@ -353,6 +353,9 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
 
         new_notifv[i,2:Mnage] = CDR[1:(Mnage-1)]*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage])
 
+        new_actvv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*Sv[i-1,1:(Mnage-1)]*dt + (((1-effD)*v[1:(Mnage-1)]) + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*Lv[i-1,1:(Mnage-1)]*dt + (((1-effD)*r[1:(Mnage-1)]) + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*g)*Rv[i-1,1:(Mnage-1)]*dt
+
+
         Rv[i,2:Mnage] = Rv[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(Iv[i-1,1:((Mnage-1))] + NIv[i-1,1:((Mnage-1))])*dt + CDR[1:(Mnage-1)]*CoT*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage]) - ((1-effD)*r[1:(Mnage-1)] + g*(1-effI)*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*Rv[i-1,1:(Mnage-1)]*dt 
         
         Iv[i,2:Mnage] = Iv[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT)*new_Iv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:((Mnage-1))] + ui[1:(Mnage-1)])*Iv[i-1,1:(Mnage-1)]*dt
@@ -478,7 +481,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       #AllDeathsH[i,]=dt*((uH+uiHA)*IH[i-1,]+(uH+uniHA)*NIH[i-1,]);
       #print ("done TB deaths")
       
-      # Age deaths HIV-, HIV+
+      # All deaths (TB and non-TB) HIV-, HIV+
       ADeaths[i,]=dt*(u*S[i-1,]+u*L[i-1,]+(u+ui)*I[i-1,]+(u+uni)*NI[i-1,]+u*R[i-1,]+u*Sv[i-1,]+u*Lv[i-1,]+u*Rv[i-1,]+(u+ui)*Iv[i-1,]+(u+uni)*NIv[i-1,])
       #ADeathsH[i,]=dt*(uH*SH[i-1,]+uH*LH[i-1,]+(uH+uiHA)*IH[i-1,]+(uH+uniHA)*NIH[i-1,]+uH*RH[i-1,]+u*SvH[i-1,]+u*LvH[i-1,]+u*RvH[i-1,])
       #print ("done Adeaths")
@@ -547,6 +550,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
        
         #print("1")
         new_actv[i,1:Mnage] = lambda[i-1,1:Mnage]*p[1:Mnage]*S[i-1,1:Mnage]*dt + (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:Mnage]*x)*L[i-1,1:Mnage]*dt + (r[1:Mnage] + lambda[i-1,1:Mnage]*p[1:Mnage]*g)*R[i-1,1:Mnage]*dt
+        
         new_actv_chk[i,1:Mnage] = new_actv_react[i,1:Mnage] + new_actv_inf[i,1:Mnage]
         
         new_notif[i,1:Mnage] = CDR[1:(Mnage)]*(new_I[i,1:Mnage] + e*new_NI[i,1:Mnage])
@@ -594,6 +598,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
 
         new_notifv[i,1:Mnage] = CDR[1:(Mnage)]*(new_Iv[i,1:Mnage] + e*new_NIv[i,1:Mnage])
 
+        new_actvv[i,1:Mnage] = ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*Sv[i-1,1:Mnage]*dt + (((1-effD)*v[1:Mnage]) + ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*x)*Lv[i-1,1:Mnage]*dt + (((1-effD)*r[1:Mnage]) + ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*g)*Rv[i-1,1:Mnage]*dt
 
         Rv[i,1:Mnage] = Rv[i-1,1:Mnage] + n[1:Mnage]*(Iv[i-1,1:(Mnage)] + NIv[i-1,1:(Mnage)])*dt + CDR[1:Mnage]*CoT*(new_Iv[i,1:Mnage] + e*new_NIv[i,1:Mnage]) - ((1-effD)*r[1:Mnage] + g*(1-effI)*lambda[i-1,1:Mnage] + u[1:Mnage])*Rv[i-1,1:(Mnage)]*dt 
         
@@ -901,7 +906,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
 #           TBRa[(k-year1+1),4]<-100*((sum(new_I_react[i1:i2,56:65]))/(sum(new_I[i1:i2,56:65])))
 #           TBRa[(k-year1+1),5]<-100*((sum(new_I_react[i1:i2,66:Mnage]))/(sum(new_I[i1:i2,66:Mnage])))
 #           TBRa[(k-year1+1),6]<-100*((sum(new_I_react[i1:i2,56:Mnage]))/(sum(new_I[i1:i2,56:Mnage])))
-#           
+###NOT UPDATED         
           TBRa[(k-year1+1),1]<-100*((sum(new_actv_react[i1:i2,]))/(sum(new_actv[i1:i2,])))
           TBRa[(k-year1+1),2]<-100*((sum(new_actv_react[i1:i2,1:15]))/(sum(new_actv[i1:i2,1:15])))
           TBRa[(k-year1+1),3]<-100*((sum(new_actv_react[i1:i2,16:55]))/(sum(new_actv[i1:i2,16:55])))
@@ -925,7 +930,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
 #           TBRi[(k-year1+1),4]<-100-(TBRa[(k-year1+1),4])
 #           TBRi[(k-year1+1),5]<-100-(TBRa[(k-year1+1),5])
 #           TBRi[(k-year1+1),6]<-100-(TBRa[(k-year1+1),6])
-#           
+###NOT UPDATED           
           TBRi[(k-year1+1),1]<-100-(TBRa[(k-year1+1),1])
           TBRi[(k-year1+1),2]<-100-(TBRa[(k-year1+1),2])
           TBRi[(k-year1+1),3]<-100-(TBRa[(k-year1+1),3])
@@ -978,14 +983,14 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
 
 
           ###(12) New active cases and TB deaths per year
-###NOT UPDATED
-          TBAc[(k-year1+1),1]<-sum(new_actv[i1:i2,])
 
-          TBAc_age[(k-year1+1),1]<-sum(new_actv[i1:i2,1:15])
-          TBAc_age[(k-year1+1),2]<-sum(new_actv[i1:i2,16:25])
-          TBAc_age[(k-year1+1),3]<-sum(new_actv[i1:i2,26:55])
-          TBAc_age[(k-year1+1),4]<-sum(new_actv[i1:i2,56:65])
-          TBAc_age[(k-year1+1),5]<-sum(new_actv[i1:i2,66:Mnage])
+          TBAc[(k-year1+1),1]<-sum(new_actv[i1:i2,],new_actvv[i1:i2,])
+
+          TBAc_age[(k-year1+1),1]<-sum(new_actv[i1:i2,1:15],new_actvv[i1:i2,1:15])
+          TBAc_age[(k-year1+1),2]<-sum(new_actv[i1:i2,16:25],new_actvv[i1:i2,16:25])
+          TBAc_age[(k-year1+1),3]<-sum(new_actv[i1:i2,26:55],new_actvv[i1:i2,26:55])
+          TBAc_age[(k-year1+1),4]<-sum(new_actv[i1:i2,56:65],new_actvv[i1:i2,56:65])
+          TBAc_age[(k-year1+1),5]<-sum(new_actv[i1:i2,66:Mnage],new_actvv[i1:i2,66:Mnage])
 
           TBMo[(k-year1+1),1]<-sum(TBDeaths[i1:i2,])
 
@@ -1112,7 +1117,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
   assign('CDR',CDR,envir=.GlobalEnv);assign('CDR2010',CDR2010,envir=.GlobalEnv);
   #assign('CDRout',CDRout,envir=.GlobalEnv);
   assign('TBProp',TBProp,envir=.GlobalEnv);
-  assign('new_actv',new_actv, envir=.GlobalEnv);
+  assign('new_actv',new_actv, envir=.GlobalEnv);assign('new_actvv',new_actvv, envir=.GlobalEnv);
   #   assign('I1990',I1990,envir=.GlobalEnv);
   #   assign('I2020',I2020,envir=.GlobalEnv);
   assign('I2050',I2050,envir=.GlobalEnv);

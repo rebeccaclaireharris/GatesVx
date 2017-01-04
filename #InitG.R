@@ -38,7 +38,9 @@ new_notif<-matrix(0,steps,Mnage)
 
 
 # Vaccine matrices: Susceptible, Latent, activeinfectious, active non infectious, Recovered and vaccinated. 
-Sv<-matrix(0,steps,Mnage); Lv<-matrix(0,steps,Mnage);Iv<-matrix(0,steps,Mnage);NIv<-matrix(0,steps,Mnage);Rv<-matrix(0,steps,Mnage); new_Iv<-matrix(0,steps,Mnage); new_NIv<-matrix(0,steps,Mnage);new_Iv_noconv<-matrix(0,steps,Mnage); new_notifv<-matrix(0,steps,Mnage)
+Sv<-matrix(0,steps,Mnage); Lv<-matrix(0,steps,Mnage);Iv<-matrix(0,steps,Mnage);NIv<-matrix(0,steps,Mnage);Rv<-matrix(0,steps,Mnage); new_Iv<-matrix(0,steps,Mnage); new_NIv<-matrix(0,steps,Mnage);new_Iv_noconv<-matrix(0,steps,Mnage); new_notifv<-matrix(0,steps,Mnage); new_actvv<-matrix(0,steps,Mnage)
+
+
 
 
 
