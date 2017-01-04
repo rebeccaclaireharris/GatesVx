@@ -303,8 +303,6 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       new_actv_inf[i,2:Mnage] = lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*S[i-1,1:(Mnage-1)]*dt + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*x*(L[i-1,1:(Mnage-1)])*dt + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*g*R[i-1,1:(Mnage-1)]*dt 
 
 
-
-
       new_I[i,2:Mnage] = lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*f[1:(Mnage-1)]*(S[i-1,1:(Mnage-1)] + g*R[i-1,1:(Mnage-1)])*dt + (v[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*x)*f[1:(Mnage-1)]*L[i-1,1:(Mnage-1)]*dt + r[1:(Mnage-1)]*h[1:(Mnage-1)]*R[i-1,1:(Mnage-1)]*dt + w*NI[i-1,1:(Mnage-1)]*dt
       new_I_noconv[i,2:Mnage] = lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*f[1:(Mnage-1)]*(S[i-1,1:(Mnage-1)] + g*R[i-1,1:(Mnage-1)])*dt + (v[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*x)*f[1:(Mnage-1)]*L[i-1,1:(Mnage-1)]*dt + r[1:(Mnage-1)]*h[1:(Mnage-1)]*R[i-1,1:(Mnage-1)]*dt
       new_NI[i,2:Mnage] = lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*(1 - f[1:(Mnage-1)])*(S[i-1,1:(Mnage-1)] + g*R[i-1,1:(Mnage-1)])*dt + (v[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*x)*(1 - f[1:(Mnage-1)])*L[i-1,1:(Mnage-1)]*dt + r[1:(Mnage-1)]*(1 - h[1:(Mnage-1)])*R[i-1,1:(Mnage-1)]*dt  
@@ -319,9 +317,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       R[i,2:Mnage] = R[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(I[i-1,1:(Mnage-1)] + NI[i-1,1:(Mnage-1)])*dt + CDR[1:(Mnage-1)]*CoT*(new_I[i,2:Mnage] + e*new_NI[i,2:Mnage]) - (r[1:(Mnage-1)] + g*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*R[i-1,1:(Mnage-1)]*dt 
       I[i,2:Mnage] = I[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT)*(new_I[i,2:Mnage]) - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + ui[1:(Mnage-1)])*I[i-1,1:(Mnage-1)]*dt
       NI[i,2:Mnage] = NI[i-1,1:(Mnage-1)] + ((1 - CDR[1:(Mnage-1)]*CoT*e)*new_NI[i,2:Mnage]) - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NI[i-1,1:(Mnage-1)]*dt                    
-      
-    #crude estmate of CFR - #deaths/#prevalent cases
-     CFR[i,] = ((sum(uni[1:(Mnage-1)]*dt*NI[i-1,1:(Mnage-1)])) + (sum(ui[1:(Mnage-1)]*dt*I[i-1,1:(Mnage-1)]))+(sum(uni[1:(Mnage-1)]*dt*NIv[i-1,1:(Mnage-1)])) + (sum(ui[1:(Mnage-1)]*dt*Iv[i-1,1:(Mnage-1)])))/(sum(NI[i-1,1:(Mnage-1)]+I[i-1,1:(Mnage-1)]+NIv[i-1,1:(Mnage-1)]+Iv[i-1,1:(Mnage-1)]))       
+        
 
 
 
@@ -341,16 +337,35 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       
       ####•••••••••••••••••••••••••••••••••••••••••••••••••••••••• VACCINE STRATA AGING + INFECTION •••••••••••••••••••••••••
       ## Others have aged so need these to be reset to zero
-      Sv[i,1] = 0;Lv[i,1] = 0;Rv[i,1] = 0; #SvH[i,1] = 0;LvH[i,1] = 0;RvH[i,1] = 0;
+      Sv[i,1] = 0;Lv[i,1] = 0;Rv[i,1] = 0;Iv[i,1] = 0; NIv[i,1] = 0;new_Iv[i,1] = 0;new_NIv[i,1] = 0; new_Iv_noconv[i,1] = 0;new_notifv[i,1] = 0;#SvH[i,1] = 0;LvH[i,1] = 0;RvH[i,1] = 0;
       
-      Sv[i,2:Mnage] = Sv[i-1,1:(Mnage-1)] - (u[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)])*Sv[i-1,1:(Mnage-1)]*dt
-      Lv[i,2:Mnage] = Lv[i-1,1:(Mnage-1)] - (u[1:(Mnage-1)])*Lv[i-1,1:(Mnage-1)]*dt + lambda[i-1,1:(Mnage-1)]*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:(Mnage-1)])*dt
-      Rv[i,2:Mnage] = Rv[i-1,1:(Mnage-1)] - (u[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)]*g)*Rv[i-1,1:(Mnage-1)]*dt
-      
-      #SvH[i,15:Mnage] = SvH[i-1,14:(Mnage-1)] + hiv[14:(Mnage-1)]*Sv[i-1,14:(Mnage-1)]*dt - (uH[14:(Mnage-1)])*SvH[i-1,14:(Mnage-1)]*dt - lambda[i-1,1:Mnage]*(SvH[i-1,14:(Mnage-1)])*dt
-      #LvH[i,15:Mnage] = LvH[i-1,14:(Mnage-1)] + hiv[14:(Mnage-1)]*Lv[i-1,14:(Mnage-1)]*dt - (uH[14:(Mnage-1)])*LvH[i-1,14:(Mnage-1)]*dt + lambda[i-1,1:Mnage]*(SvH[i-1,14:(Mnage-1)] + gHA*RvH[i-1,14:(Mnage-1)])*dt
-      #RvH[i,15:Mnage] = RvH[i-1,14:(Mnage-1)] + hiv[14:(Mnage-1)]*Rv[i-1,14:(Mnage-1)]*dt - (uH[14:(Mnage-1)])*RvH[i-1,14:(Mnage-1)]*dt - lambda[i-1,1:Mnage]*(gHA*RvH[i-1,14:(Mnage-1)])*dt          
-      
+        
+        Sv[i,2:Mnage] = Sv[i-1,1:(Mnage-1)] - (u[1:(Mnage-1)]+((1-effI)*lambda[i-1,1:(Mnage-1)]))*Sv[i-1,1:(Mnage-1)]*dt 
+        
+        Lv[i,2:Mnage] = Lv[i-1,1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*(1 - ((1-effD)*p[1:(Mnage-1)]))*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:(Mnage-1)])*dt - ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x + u[1:(Mnage-1)])*Lv[i-1,1:(Mnage-1)]*dt   
+        
+        new_Iv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*f[1:(Mnage-1)]*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:((Mnage-1))])*dt + ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*f[1:((Mnage-1))]*Lv[i-1,1:(Mnage-1)]*dt + (1-effD)*r[1:(Mnage-1)]*h[1:(Mnage-1)]*Rv[i-1,1:(Mnage-1)]*dt + w*NIv[i-1,1:(Mnage-1)]*dt
+        
+        new_Iv_noconv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*f[1:(Mnage-1)]*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:(Mnage-1)])*dt + ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*f[1:(Mnage-1)]*Lv[i-1,1:(Mnage-1)]*dt + (1-effD)*r[1:(Mnage-1)]*h[1:(Mnage-1)]*Rv[i-1,1:(Mnage-1)]*dt
+                    
+                  
+        new_NIv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*(1 - f[1:(Mnage-1)])*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:(Mnage-1)])*dt + ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*(1 - f[1:(Mnage-1)])*Lv[i-1,1:(Mnage-1)]*dt + (1-effD)*r[1:(Mnage-1)]*(1 - h[1:(Mnage-1)])*Rv[i-1,1:(Mnage-1)]*dt  
+
+        new_notifv[i,2:Mnage] = CDR[1:(Mnage-1)]*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage])
+
+        Rv[i,2:Mnage] = Rv[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(Iv[i-1,1:((Mnage-1))] + NIv[i-1,1:((Mnage-1))])*dt + CDR[1:(Mnage-1)]*CoT*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage]) - ((1-effD)*r[1:(Mnage-1)] + g*(1-effI)*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*Rv[i-1,1:(Mnage-1)]*dt 
+        
+        Iv[i,2:Mnage] = Iv[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT)*new_Iv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:((Mnage-1))] + ui[1:(Mnage-1)])*Iv[i-1,1:(Mnage-1)]*dt
+        
+        NIv[i,2:Mnage] = NIv[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT*e)*new_NIv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NIv[i-1,1:((Mnage-1))]*dt   
+        
+
+
+
+      #crude estmate of CFR - #deaths/#prevalent cases
+           CFR[i,] = ((sum(uni[1:(Mnage-1)]*dt*NI[i-1,1:(Mnage-1)])) + (sum(ui[1:(Mnage-1)]*dt*I[i-1,1:(Mnage-1)]))+(sum(uni[1:(Mnage-1)]*dt*NIv[i-1,1:(Mnage-1)])) + (sum(ui[1:(Mnage-1)]*dt*Iv[i-1,1:(Mnage-1)])))/(sum(NI[i-1,1:(Mnage-1)]+I[i-1,1:(Mnage-1)]+NIv[i-1,1:(Mnage-1)]+Iv[i-1,1:(Mnage-1)]))     
+            
+
       ###•••••••••••••••••• Vaccine coverage and duration ••••••••••••••••
       # NUMBER OF VACCINES (column 1=all, 2=routine, 3=mass)
       if(vaccine == 0){VX[i,1:3]<-0}
@@ -365,25 +380,21 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       if(vaccine == 9){VX[i,1]<-(sum(thetaV4a[i,]*(S[i,]+L[i,]+R[i,]))+sum(thetaV4m[i,]*(S[i,]+L[i,]+R[i,])));VX[i,2]<-sum(thetaV4a[i,]*(S[i,]+L[i,]+R[i,])); VX[i,3]<-sum(thetaV4m[i,]*(S[i,]+L[i,]+R[i,]))}
 
 
+      
+      ##•••••••••••••••••• Vaccination campaign: implement both vaccination and waning
 
-
-      
-      ##•••••••••••••••••• Vaccination campaign: age everyone and then implement (both vaccination and return)
-      S2 = S[i,] + Sv[i,]*(d[i,]*(1-thetaS[i,])) - thetaS[i,]*S[i,]
-      L2 = L[i,] + Lv[i,]*(d[i,]*(1-thetaL[i,])) - thetaL[i,]*L[i,]
-      R2 = R[i,] + Rv[i,]*(d[i,]*(1-thetaR[i,])) - thetaR[i,]*R[i,]
-      
-      #SH2 = SH[i,] + SvH[i,]*(d[i,]*(1-theta[i,])) - thetaH[i,]*SH[i,]
-      #LH2 = LH[i,] + LvH[i,]*(d[i,]*(1-theta[i,])) - thetaH[i,]*LH[i,]
-      #RH2 = RH[i,] + RvH[i,]*(d[i,]*(1-theta[i,])) - thetaH[i,]*RH[i,]
-      
-      Sv2 = Sv[i,] - Sv[i,]*(d[i,]*(1-thetaS[i,])) + thetaS[i,]*S[i,]
-      Lv2 = Lv[i,] - Lv[i,]*(d[i,]*(1-thetaL[i,])) + thetaL[i,]*L[i,]
-      Rv2 = Rv[i,] - Rv[i,]*(d[i,]*(1-thetaR[i,])) + thetaR[i,]*R[i,]
-      
-      #SvH2 = SvH[i,] - SvH[i,]*(d[i,]*(1-thetaH[i,])) + thetaH[i,]*SH[i,]
-      #LvH2 = LvH[i,] - LvH[i,]*(d[i,]*(1-thetaH[i,])) + thetaH[i,]*LH[i,]
-      #RvH2 = RvH[i,] - RvH[i,]*(d[i,]*(1-thetaH[i,])) + thetaH[i,]*RH[i,]
+        S2 = S[i,] + Sv[i,]*(d[i,]*(1-thetaS[i,])) - thetaS[i,]*S[i,]  
+        L2 = L[i,] + Lv[i,]*(d[i,]*(1-thetaL[i,])) - thetaL[i,]*L[i,]
+        R2 = R[i,] + Rv[i,]*(d[i,]*(1-thetaR[i,])) - thetaR[i,]*R[i,]
+        I2 = I[i,] + Iv[i,]*d[i,] 
+        NI2 = NI[i,] + NIv[i,]*d[i,] 
+        
+        
+        Sv2 = Sv[i,] - Sv[i,]*(d[i,]*(1-thetaS[i,])) + thetaS[i,]*S[i,]
+        Lv2 = Lv[i,] - Lv[i,]*(d[i,]*(1-thetaL[i,])) + thetaL[i,]*L[i,]
+        Rv2 = Rv[i,] - Rv[i,]*(d[i,]*(1-thetaR[i,])) + thetaR[i,]*R[i,]
+        Iv2 = Iv[i,] - Iv[i,]*(d[i,])
+        NIv2 = NIv[i,] - NIv[i,]*(d[i,])
       
       ##calculate the number just vaccinated before the S gets replaced by S2 etc. Everyone except active cases included.
       if (vaccine==2){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
@@ -395,13 +406,12 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       if (vaccine==8){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
       if (vaccine==9){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
 
-
+        
+      #replace S etc with the new number post-vaccination campaign and waning
+      S[i,]<-S2;L[i,]<-L2;R[i,]<-R2;I[i,]<-I2;  NI[i,]<-NI2;    
+      Sv[i,]<-Sv2;Lv[i,]<-Lv2;Rv[i,]<-Rv2; Iv[i,]<-Iv2;  NIv[i,]<-NIv2; 
 
         
-      #replace S etc with the new number post-vaccination campaign
-      S[i,]<-S2;L[i,]<-L2;R[i,]<-R2;       #SH[i,]<-SH2;LH[i,]<-LH2;RH[i,]<-RH2;
-      Sv[i,]<-Sv2;Lv[i,]<-Lv2;Rv[i,]<-Rv2; #SvH[i,]<-SvH2;LvH[i,]<-LvH2;RvH[i,]<-RvH2;
-      
       ####•••••••••••••••••• Economic Output ••••••••••••••••••
       #### Output for cost-effectiveness and pop sizes for rate calculations
       ## POPULATION SIZE
@@ -571,20 +581,22 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
 #         Rv[i,1:Mnage] = Rv[i-1,1:Mnage] - (u[1:Mnage])*Rv[i-1,1:Mnage]*dt - lambda[i-1,1:Mnage]*(g*Rv[i-1,1:Mnage])*dt
 #         
         
-        Sv[i,1:Mnage] = Sv[i-1,1:Mnage] - (u[1:Mnage]+lambda[i-1,1:Mnage])*Sv[i-1,1:Mnage]*dt - lambda[i-1,1:Mnage]*(Sv[i-1,1:Mnage])*dt 
+        Sv[i,1:Mnage] = Sv[i-1,1:Mnage] - (u[1:Mnage]+((1-effI)*lambda[i-1,1:Mnage]))*Sv[i-1,1:Mnage]*dt 
         
-        Lv[i,1:Mnage] = Lv[i-1,1:Mnage] + lambda[i-1,1:Mnage]*(1 - p[1:Mnage])*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt - (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:Mnage]*x + u[1:Mnage])*Lv[i-1,1:Mnage]*dt   
+        Lv[i,1:Mnage] = Lv[i-1,1:Mnage] + ((1-effI)*lambda[i-1,1:Mnage])*(1 - ((1-effD)*p[1:Mnage]))*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt - ((1-effD)*v[1:Mnage] + ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*x + u[1:Mnage])*Lv[i-1,1:Mnage]*dt   
         
-        Rv[i,1:Mnage] = Rv[i-1,1:Mnage] + n[1:Mnage]*(Iv[i-1,1:(Mnage)] + NIv[i-1,1:(Mnage)])*dt + CDR[1:Mnage]*CoT*(new_Iv[i,1:Mnage] + e*new_NIv[i,1:Mnage]) - (r[1:Mnage] + g*lambda[i-1,1:Mnage] + u[1:Mnage])*Rv[i-1,1:(Mnage)]*dt 
+        new_Iv[i,1:Mnage] = ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*f[1:Mnage]*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:(Mnage)])*dt + ((1-effD)*v[1:Mnage] + ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*x)*f[1:(Mnage)]*Lv[i-1,1:Mnage]*dt + (1-effD)*r[1:Mnage]*h[1:Mnage]*Rv[i-1,1:Mnage]*dt + w*NIv[i-1,1:Mnage]*dt
         
-        new_Iv[i,1:Mnage] = lambda[i-1,1:Mnage]*p[1:Mnage]*f[1:Mnage]*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:(Mnage)])*dt + (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:(Mnage)]*x)*f[1:(Mnage)]*Lv[i-1,1:Mnage]*dt + r[1:Mnage]*h[1:Mnage]*Rv[i-1,1:Mnage]*dt + w*NIv[i-1,1:Mnage]*dt
-        
-        new_Iv_noconv[i,1:Mnage] = lambda[i-1,1:Mnage]*p[1:Mnage]*f[1:Mnage]*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt + (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:Mnage]*x)*f[1:Mnage]*Lv[i-1,1:Mnage]*dt + r[1:Mnage]*h[1:Mnage]*Rv[i-1,1:Mnage]*dt
+        new_Iv_noconv[i,1:Mnage] = ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*f[1:Mnage]*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt + ((1-effD)*v[1:Mnage] + ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*x)*f[1:Mnage]*Lv[i-1,1:Mnage]*dt + (1-effD)*r[1:Mnage]*h[1:Mnage]*Rv[i-1,1:Mnage]*dt
                     
                   
-        new_NIv[i,1:Mnage] = lambda[i-1,1:Mnage]*p[1:Mnage]*(1 - f[1:Mnage])*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt + (v[1:Mnage] + lambda[i-1,1:Mnage]*p[1:Mnage]*x)*(1 - f[1:Mnage])*Lv[i-1,1:Mnage]*dt + r[1:Mnage]*(1 - h[1:Mnage])*Rv[i-1,1:Mnage]*dt  
+        new_NIv[i,1:Mnage] = ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*(1 - f[1:Mnage])*(Sv[i-1,1:Mnage] + g*Rv[i-1,1:Mnage])*dt + ((1-effD)*v[1:Mnage] + ((1-effI)*lambda[i-1,1:Mnage])*((1-effD)*p[1:Mnage])*x)*(1 - f[1:Mnage])*Lv[i-1,1:Mnage]*dt + (1-effD)*r[1:Mnage]*(1 - h[1:Mnage])*Rv[i-1,1:Mnage]*dt  
+
+        new_notifv[i,1:Mnage] = CDR[1:(Mnage)]*(new_Iv[i,1:Mnage] + e*new_NIv[i,1:Mnage])
 
 
+        Rv[i,1:Mnage] = Rv[i-1,1:Mnage] + n[1:Mnage]*(Iv[i-1,1:(Mnage)] + NIv[i-1,1:(Mnage)])*dt + CDR[1:Mnage]*CoT*(new_Iv[i,1:Mnage] + e*new_NIv[i,1:Mnage]) - ((1-effD)*r[1:Mnage] + g*(1-effI)*lambda[i-1,1:Mnage] + u[1:Mnage])*Rv[i-1,1:(Mnage)]*dt 
+        
         Iv[i,1:Mnage] = Iv[i-1,1:Mnage] + (1 - CDR[1:Mnage]*CoT)*new_Iv[i,1:Mnage] - (n[1:Mnage] + u[1:(Mnage)] + ui[1:Mnage])*Iv[i-1,1:Mnage]*dt
         
         NIv[i,1:Mnage] = NIv[i-1,1:Mnage] + (1 - CDR[1:Mnage]*CoT*e)*new_NIv[i,1:Mnage] - (n[1:Mnage] + u[1:Mnage] + uni[1:Mnage] + w)*NIv[i-1,1:(Mnage)]*dt   
@@ -606,7 +618,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         
         
         #print("done vacc assignment")
-        ####•••••••••••••••••• Vaccination and Removal of protection
+        ####•••••••••••••••••• Vaccination and Waning
         
         S2 = S[i,] + Sv[i,]*(d[i,]*(1-thetaS[i,])) - thetaS[i,]*S[i,]  #should this theta be k???
         L2 = L[i,] + Lv[i,]*(d[i,]*(1-thetaL[i,])) - thetaL[i,]*L[i,]
@@ -770,28 +782,28 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
           #print("k2")
           
           ## (2) TB incidence rate
-          TBI[(k-year1+1),1]<-100000*sum(new_I_noconv[i1:i2,],new_NI[i1:i2,])/mean(psize[i1:i2])
-          TBI[(k-year1+1),2]<-100000*sum(new_I_noconv[i1:i2,1:15],new_NI[i1:i2,1:15])/mean(psize014[i1:i2])
-          TBI[(k-year1+1),3]<-100000*sum(new_I_noconv[i1:i2,16:55],new_NI[i1:i2,16:55])/mean(psize1554[i1:i2])
-          TBI[(k-year1+1),4]<-100000*sum(new_I_noconv[i1:i2,56:65],new_NI[i1:i2,56:65])/mean(psize5564[i1:i2])
-          TBI[(k-year1+1),5]<-100000*sum(new_I_noconv[i1:i2,66:Mnage],new_NI[i1:i2,66:Mnage])/mean(psize65plus[i1:i2])
-          TBI[(k-year1+1),6]<-100000*sum(new_I_noconv[i1:i2,56:Mnage],new_NI[i1:i2,56:Mnage])/mean(psize55plus[i1:i2])
-          TBI[(k-year1+1),7]<-100000*sum(new_I_noconv[i1:i2,1:55],new_NI[i1:i2,1:55])/mean(psize55minus[i1:i2])
-          TBI[(k-year1+1),8]<-100000*sum(new_I_noconv[i1:i2,16:25],new_NI[i1:i2,16:25])/mean(psize1524[i1:i2])
-          TBI[(k-year1+1),9]<-100000*sum(new_I_noconv[i1:i2,26:55],new_NI[i1:i2,26:55])/mean(psize2554[i1:i2])
+          TBI[(k-year1+1),1]<-100000*sum(new_I_noconv[i1:i2,],new_NI[i1:i2,],new_Iv_noconv[i1:i2,],new_NIv[i1:i2,])/mean(psize[i1:i2])
+          TBI[(k-year1+1),2]<-100000*sum(new_I_noconv[i1:i2,1:15],new_NI[i1:i2,1:15],new_Iv_noconv[i1:i2,1:15],new_NIv[i1:i2,1:15])/mean(psize014[i1:i2])
+          TBI[(k-year1+1),3]<-100000*sum(new_I_noconv[i1:i2,16:55],new_NI[i1:i2,16:55],new_Iv_noconv[i1:i2,16:55],new_NIv[i1:i2,16:55])/mean(psize1554[i1:i2])
+          TBI[(k-year1+1),4]<-100000*sum(new_I_noconv[i1:i2,56:65],new_NI[i1:i2,56:65],new_Iv_noconv[i1:i2,56:65],new_NIv[i1:i2,56:65])/mean(psize5564[i1:i2])
+          TBI[(k-year1+1),5]<-100000*sum(new_I_noconv[i1:i2,66:Mnage],new_NI[i1:i2,66:Mnage],new_Iv_noconv[i1:i2,66:Mnage],new_NIv[i1:i2,66:Mnage])/mean(psize65plus[i1:i2])
+          TBI[(k-year1+1),6]<-100000*sum(new_I_noconv[i1:i2,56:Mnage],new_NI[i1:i2,56:Mnage],new_Iv_noconv[i1:i2,56:Mnage],new_NIv[i1:i2,56:Mnage])/mean(psize55plus[i1:i2])
+          TBI[(k-year1+1),7]<-100000*sum(new_I_noconv[i1:i2,1:55],new_NI[i1:i2,1:55],new_Iv_noconv[i1:i2,1:55],new_NIv[i1:i2,1:55])/mean(psize55minus[i1:i2])
+          TBI[(k-year1+1),8]<-100000*sum(new_I_noconv[i1:i2,16:25],new_NI[i1:i2,16:25],new_Iv_noconv[i1:i2,16:25],new_NIv[i1:i2,16:25])/mean(psize1524[i1:i2])
+          TBI[(k-year1+1),9]<-100000*sum(new_I_noconv[i1:i2,26:55],new_NI[i1:i2,26:55],new_Iv_noconv[i1:i2,26:55],new_NIv[i1:i2,26:55])/mean(psize2554[i1:i2])
           
           
           
           
 
           ## (2b) TB notification rate
-          TBN[(k-year1+1),1]<-100000*sum(new_notif[i1:i2,]/mean(psize[i1:i2]))
-          TBN[(k-year1+1),2]<-100000*sum(new_notif[i1:i2,1:15]/mean(psize014[i1:i2]))
-          TBN[(k-year1+1),3]<-100000*sum(new_notif[i1:i2,16:55]/mean(psize1554[i1:i2]))
-          TBN[(k-year1+1),4]<-100000*sum(new_notif[i1:i2,56:65]/mean(psize5564[i1:i2]))
-          TBN[(k-year1+1),5]<-100000*sum(new_notif[i1:i2,66:Mnage]/mean(psize65plus[i1:i2]))  
-          TBN[(k-year1+1),6]<-100000*sum(new_notif[i1:i2,56:Mnage]/mean(psize55plus[i1:i2]))  
-          TBN[(k-year1+1),7]<-100000*sum(new_notif[i1:i2,1:55]/mean(psize55minus[i1:i2]))  
+          TBN[(k-year1+1),1]<-100000*sum(new_notif[i1:i2,],new_notifv[i1:i2,])/mean(psize[i1:i2])
+          TBN[(k-year1+1),2]<-100000*sum(new_notif[i1:i2,1:15],new_notifv[i1:i2,1:15])/mean(psize014[i1:i2])
+          TBN[(k-year1+1),3]<-100000*sum(new_notif[i1:i2,16:55],new_notifv[i1:i2,16:55])/mean(psize1554[i1:i2])
+          TBN[(k-year1+1),4]<-100000*sum(new_notif[i1:i2,56:65],new_notifv[i1:i2,56:65])/mean(psize5564[i1:i2])
+          TBN[(k-year1+1),5]<-100000*sum(new_notif[i1:i2,66:Mnage],new_notifv[i1:i2,66:Mnage])/mean(psize65plus[i1:i2])  
+          TBN[(k-year1+1),6]<-100000*sum(new_notif[i1:i2,56:Mnage],new_notifv[i1:i2,56:Mnage])/mean(psize55plus[i1:i2])  
+          TBN[(k-year1+1),7]<-100000*sum(new_notif[i1:i2,1:55],new_notifv[i1:i2,1:55])/mean(psize55minus[i1:i2])
           
           
           
@@ -950,16 +962,15 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
 
           ## (10) proortion of prevalent cases by age
           ##needs fixing!
-###NOT UPDATED
-          TBProp[(k-year1+1),1]<-sum(I[i1:i2,1:15])/sum(I[i1:i2])
-          TBProp[(k-year1+1),2]<-sum(I[i1:i2,16:55])/sum(I[i1:i2])
-          TBProp[(k-year1+1),3]<-sum(I[i1:i2,56:65])/sum(I[i1:i2])
-          TBProp[(k-year1+1),4]<-sum(I[i1:i2,66:Mnage])/sum(I[i1:i2])
+          TBProp[(k-year1+1),1]<-sum(I[i1:i2,1:15],Iv[i1:i2,1:15])/sum(I[i1:i2],Iv[i1:i2])
+          TBProp[(k-year1+1),2]<-sum(I[i1:i2,16:55],Iv[i1:i2,16:55])/sum(I[i1:i2],Iv[i1:i2])
+          TBProp[(k-year1+1),3]<-sum(I[i1:i2,56:65],Iv[i1:i2,56:65])/sum(I[i1:i2],Iv[i1:i2])
+          TBProp[(k-year1+1),4]<-sum(I[i1:i2,66:Mnage],Iv[i1:i2,66:Mnage])/sum(I[i1:i2],Iv[i1:i2])
           
 
 
           #(11) to calc PAF - number of new infections
-###NOT UPDATED
+###NOT UPDATED as relevant to epi baseline
           #I1990[1,]<-sum(new_infect[((1990-year1)*(1/dt)+1):((1990+1-year1)*(1/dt)),])
           #I2025[1,]<-sum(new_infect[((2025-year1)*(1/dt)+1):((2025+1-year1)*(1/dt)),])
           #I2050[1,]<-sum(new_infect[((2050-year1)*(1/dt)+1):((2050+1-year1)*(1/dt)),])
@@ -979,7 +990,6 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
           TBMo[(k-year1+1),1]<-sum(TBDeaths[i1:i2,])
 
           ##(13) number receiving vaccine
-###NOT UPDATED
           NV[(k-year1+1),1]<-sum(num_vac[i1:i2,])
 
 
@@ -1053,10 +1063,11 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
   } 
 
   ## Outputs - in R, allows output to be seen without expressly wanting it 
-  assign('S',S,envir = .GlobalEnv);assign('L',L,envir = .GlobalEnv);assign('I',I,envir = .GlobalEnv);assign('NI',NI,envir = .GlobalEnv);assign('R',R,envir = .GlobalEnv);assign('new_I',new_I,envir = .GlobalEnv);assign('new_I_noconv',new_I_noconv,envir = .GlobalEnv);assign('new_NI',new_NI,envir = .GlobalEnv);assign('new_notif',new_notif,envir = .GlobalEnv)
+  assign('S',S,envir = .GlobalEnv);assign('L',L,envir = .GlobalEnv);assign('I',I,envir = .GlobalEnv);assign('NI',NI,envir = .GlobalEnv);assign('R',R,envir = .GlobalEnv);assign('new_I',new_I,envir = .GlobalEnv);assign('new_I_noconv',new_I_noconv,envir = .GlobalEnv);assign('new_NI',new_NI,envir = .GlobalEnv);assign('new_notif',new_notif,envir = .GlobalEnv);
   assign('NBirths',BIRTHS,envir=.GlobalEnv);  assign('brate',brate,envir=.GlobalEnv)  
   #assign('SH',SH,envir = .GlobalEnv);assign('LH',LH,envir = .GlobalEnv);#assign('IH',IH,envir = .GlobalEnv);assign('NIH',NIH,envir = .GlobalEnv);assign('RH',RH,envir = .GlobalEnv);assign('new_IH',new_IH,envir = .GlobalEnv);assign('new_NIH',new_NIH,envir = .GlobalEnv)
-  assign('Sv',Sv,envir = .GlobalEnv);assign('Lv',Lv,envir = .GlobalEnv);assign('Rv',Rv,envir = .GlobalEnv);assign('Iv',Iv,envir = .GlobalEnv);assign('NIv',NIv,envir = .GlobalEnv);#assign('SvH',SvH,envir = .GlobalEnv);assign('LvH',LvH,envir = .GlobalEnv);assign('RvH',RvH,envir = .GlobalEnv);
+  assign('Sv',Sv,envir = .GlobalEnv);assign('Lv',Lv,envir = .GlobalEnv);assign('Rv',Rv,envir = .GlobalEnv);assign('Iv',Iv,envir = .GlobalEnv);assign('NIv',NIv,envir = .GlobalEnv); assign('new_Iv',new_Iv,envir = .GlobalEnv);assign('new_Iv_noconv',new_Iv_noconv,envir = .GlobalEnv);assign('new_NIv',new_NIv,envir = .GlobalEnv);assign('new_notifv',new_notifv,envir = .GlobalEnv);
+#assign('SvH',SvH,envir = .GlobalEnv);assign('LvH',LvH,envir = .GlobalEnv);assign('RvH',RvH,envir = .GlobalEnv);
   assign('lambda',lambda,envir=.GlobalEnv);assign('thetaS',thetaS,envir=.GlobalEnv);assign('thetaL',thetaL,envir=.GlobalEnv);assign('thetaR',thetaR,envir=.GlobalEnv);
   assign('d',d,envir=.GlobalEnv);
   assign('TBDeaths',TBDeaths,envir=.GlobalEnv);#assign('TBDeathsH',TBDeathsH,envir=.GlobalEnv);

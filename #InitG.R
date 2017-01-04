@@ -17,9 +17,9 @@ R<-matrix(0,steps,Mnage);  RH<-matrix(0,steps,Mnage)
 #newly infected people
 new_infect<-matrix(0,steps,Mnage)
 # New Infectious, New Infectious with HIV
-new_I<-matrix(0,steps,Mnage); new_IH<-matrix(0,steps,Mnage); 
+new_I<-matrix(0,steps,Mnage); 
 # New non-Infectious, New non-Infectious with HIV
-new_NI<-matrix(0,steps,Mnage); new_NIH<-matrix(0,steps,Mnage);
+new_NI<-matrix(0,steps,Mnage); 
 #new reactivation Infectious/non infectious
 new_I_react<-matrix(0,steps,Mnage)
 new_I_noconv<-matrix(0,steps,Mnage)
@@ -37,8 +37,12 @@ CFR<-matrix(0,steps,1)
 new_notif<-matrix(0,steps,Mnage)
 
 
-# Vaccine matrices: Susceptible, Latent, activeinfectious, active non infectious, Recovered and vaccinated. And then with HIV
-Sv<-matrix(0,steps,Mnage); Lv<-matrix(0,steps,Mnage);Iv<-matrix(0,steps,Mnage);NIv<-matrix(0,steps,Mnage);Rv<-matrix(0,steps,Mnage);
+# Vaccine matrices: Susceptible, Latent, activeinfectious, active non infectious, Recovered and vaccinated. 
+Sv<-matrix(0,steps,Mnage); Lv<-matrix(0,steps,Mnage);Iv<-matrix(0,steps,Mnage);NIv<-matrix(0,steps,Mnage);Rv<-matrix(0,steps,Mnage); new_Iv<-matrix(0,steps,Mnage); new_NIv<-matrix(0,steps,Mnage);new_Iv_noconv<-matrix(0,steps,Mnage); new_notifv<-matrix(0,steps,Mnage)
+
+
+
+
 #SvH<-matrix(0,steps,Mnage);LvH<-matrix(0,steps,Mnage);RvH<-matrix(0,steps,Mnage);
 
 ## Initialising depends on fit...  (Maybe change this...)
