@@ -5,7 +5,7 @@
 # Takes in country, vaccine details, fit parameters, initial values, time for simulation, whether to plot, cluster or not
 FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
   # Cntry <- country name; 
-  # Vx <- vector of vaccine properties. c(vxtype, coverage routine, coverage mass,POI efficacy, POD efficacy, duration, freq mass campaigns). If blank then no vaccine (for fit)
+  # Vx <- vector of vaccine properties. c(vxtype, coverage routine, coverage mass,POI efficacy, POD efficacy, duration, freq mass campaigns, age of routine vaccination). If blank then no vaccine (for fit)
   # Fit <- 7 fit parameters
   # InitV <- vector of initial values: Run number, timestep, proportion TB initially (either 1 or four = ? )
   # TimeScale <- c(year1, yearend)
@@ -105,14 +105,16 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
   if(length(Fit)<5){CDRscale <- 0}
   ## Generate Vaccine specific data using above eff and D if specified in input
   if(length(Vx)>1){
-    assign('vaccine',Vx[1],envir = .GlobalEnv); assign('coverage',Vx[2],envir = .GlobalEnv); assign('coverageM',Vx[3],envir = .GlobalEnv); assign('effI',Vx[4],envir = .GlobalEnv); assign('effD',Vx[5],envir = .GlobalEnv); assign('D',Vx[6],envir = .GlobalEnv); assign('boost',Vx[7],envir = .GlobalEnv)
+    assign('vaccine',Vx[1],envir = .GlobalEnv); assign('coverage',Vx[2],envir = .GlobalEnv); assign('coverageM',Vx[3],envir = .GlobalEnv); assign('effI',Vx[4],envir = .GlobalEnv); assign('effD',Vx[5],envir = .GlobalEnv); assign('D',Vx[6],envir = .GlobalEnv); assign('fmass',Vx[7],envir = .GlobalEnv); assign('vxage',Vx[8],envir = .GlobalEnv)
     source("#VxGenG.R")
   } else {d<-matrix(0,steps,Mnage); 
           thetaS<-matrix(0,steps,Mnage);
           thetaL<-matrix(0,steps,Mnage)
           thetaR<-matrix(0,steps,Mnage)
           vaccine<-0;#thetaH<-theta;
-          effI<-0;effD<-0;Dur<-0;coverage<-0;coverageM<-0
+          effI<-0;effD<-0;Dur<-0;
+          coverage<-0;coverageM<-0;
+          fmass<-0;vxage<-0
           }
   #print("Done vacc gen")
   
@@ -286,6 +288,8 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
 #       print((Imatrix[i-1,1:4])/(psizematrix[i-1,1:4]))
 #       print("post-start lambda")
       ####•••••••••••••••••• TB model ••••••••••••••••••
+
+      ####••••••• FIrst time step of year, aging and transitions of non-vax ••••••••
       # Age 1, first time step of the year, all births occur
       
       j = 1; S[i,j]<-B #B is set by year by lines BIRTHS above    
