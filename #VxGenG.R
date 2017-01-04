@@ -150,92 +150,46 @@ if (D==10){
 }
 }
 }
-# Depending on type, theta is theta# (coverage) times efficacy, d is dv#
-#vacc1=kids
-#vacc2=elderly pre-infection
-#vacc3=elderly latent only
-#vacc4=elderly mixed effects (pre or post infection, not active)
-#vacc5=ado/adult pre-infection
-#vacc6=ado/adult latent only
-#vacc7=ado/adult mixed effects (pre or post infection, not active)
-#vacc8=elderly latent excluding recoverds
-#vacc9=ado/adult latent excluding recoverds
+### setting theta ad d fordepending on vaccine tye modelled - theta is theta# (coverage), d is dv#  ###
+#vacc1=PPI
+#vacc2=PRI
+#vacc3=PSI_LR
 
 
 
 if (vaccine == 1){
-  theta<-thetaV1
-  #thetaH<-matrix(0,steps,Mnage); # NO HIV positive babies
-  d<-dV1
+  theta<-thetaV2
+  thetaS<-theta
+  thetaL<-theta
+  thetaR<-theta
+  d<-dV2 
 } else if (vaccine == 2){
   theta<-thetaV2
   thetaS<-theta
   thetaL<-thetablank
   thetaR<-thetablank
-  # HIV efficacy multiplied in main (as need yearly ART average)
-  #thetaH<-theta
   d<-dV2
-  #print(c('sumtheta',sum(theta)))
 } else if (vaccine == 3){
   theta<-thetaV2
   thetaS<-thetablank
   thetaL<-theta
   thetaR<-theta
   d<-dV2
-} else if (vaccine == 4){
-  theta<-thetaV2
-  thetaS<-theta
-  thetaL<-theta
-  thetaR<-theta
-  d<-dV2 
-#ado/adult
-} else if (vaccine == 5){
-  theta<-thetaV4
-  thetaS<-theta
-  thetaL<-thetablank
-  thetaR<-thetablank
-  d<-dV4
-} else if (vaccine == 6){
-  theta<-thetaV4
-  thetaS<-thetablank
-  thetaL<-theta
-  thetaR<-theta
-  d<-dV4
-} else if (vaccine == 7){
-  theta<-thetaV4
-  thetaS<-theta
-  thetaL<-theta
-  thetaR<-theta
-  d<-dV4
-} else if (vaccine == 8){
-  theta<-thetaV2
-  thetaS<-thetablank
-  thetaL<-theta
-  thetaR<-thetablank
-  d<-dV2
-} else if (vaccine == 9){
-  theta<-thetaV4
-  thetaS<-thetablank
-  thetaL<-theta
-  thetaR<-thetablank
-  d<-dV4
-}
+} 
 
 
 # For checking output
-#assign('thetaV1',thetaV1,envir=.GlobalEnv);
 assign('thetaV2a',thetaV2a,envir=.GlobalEnv);
 assign('thetaV2m',thetaV2m,envir=.GlobalEnv);
-assign('thetaV4a',thetaV2a,envir=.GlobalEnv);
-assign('thetaV4m',thetaV2m,envir=.GlobalEnv)
+#assign('thetaV1',thetaV1,envir=.GlobalEnv);
+#assign('thetaV4a',thetaV2a,envir=.GlobalEnv);
+#assign('thetaV4m',thetaV2m,envir=.GlobalEnv)
 
 #added
 assign('thetaV2',thetaV2,envir=.GlobalEnv);
-assign('thetaV4',thetaV4,envir=.GlobalEnv);
+#assign('thetaV4',thetaV4,envir=.GlobalEnv);
 assign('d', d,envir=.GlobalEnv);
 
-if (vaccine==8){print(d); print(thetaS); print(thetaL); print(thetaR)}
-    
 }
 
 

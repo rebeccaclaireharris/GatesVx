@@ -30,7 +30,7 @@ cntry<-"China"
 
 
 #### Vaccine interventions  ####
-typen<-9 ## Number of vaccine types (increased to 9 to inc latency vaccine and adult/ado vaccine)
+typen<-3 ## Number of vaccine types (PPI, PRI, PSI_LR)
 effI<-seq(0,100,10)/100   #efficacy for POI
 effD<-seq(0,100,10)/100   #efficacy for POD
 durs<-c(2,3,5,7,10,15,20,30,100) #duration of protection (yrs)
@@ -86,8 +86,8 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
   rrun_dfvx<-eee
   
   # For each type of vaccine
-  #have set to start at 2 only as only doing vaccine type 2(S only), 3 (L/R only) and 4 (all)  plus same again for ado/adult at the moment, then L only ado then adult
-  for (nn in 2:typen){
+  #3 vax types and only delivering to one age group for now.
+  for (nn in 1:typen){
     
     count<-0;coms<-matrix(0,combn,3);
     #for each POI efficacy
