@@ -74,22 +74,19 @@ if (D <= (yearend-yrintro)){ ## D <- 100 if lifelong protection. If D is greater
 
 
 if (vaccine == 1){
-  theta<-thetaV2
-  thetaS<-theta
-  thetaL<-theta
-  thetaR<-theta
+  thetaS<-thetaV2
+  thetaL<-thetaV2
+  thetaR<-thetaV2
   d<-dV2 
 } else if (vaccine == 2){
-  theta<-thetaV2
-  thetaS<-theta
+  thetaS<-thetaV2
   thetaL<-thetablank
   thetaR<-thetablank
   d<-dV2
 } else if (vaccine == 3){
-  theta<-thetaV2
   thetaS<-thetablank
-  thetaL<-theta
-  thetaR<-theta
+  thetaL<-thetaV2
+  thetaR<-thetaV2
   d<-dV2
 } 
 
@@ -104,6 +101,6 @@ assign('thetaV2',thetaV2,envir=.GlobalEnv);
 #assign('thetaV4',thetaV4,envir=.GlobalEnv);
 assign('d', d,envir=.GlobalEnv);
 
-}
+
 
 

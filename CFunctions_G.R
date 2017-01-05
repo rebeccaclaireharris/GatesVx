@@ -106,6 +106,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
   ## Generate Vaccine specific data using above eff and D if specified in input
   if(length(Vx)>1){
     assign('vaccine',Vx[1],envir = .GlobalEnv); assign('coverage',Vx[2],envir = .GlobalEnv); assign('coverageM',Vx[3],envir = .GlobalEnv); assign('effI',Vx[4],envir = .GlobalEnv); assign('effD',Vx[5],envir = .GlobalEnv); assign('D',Vx[6],envir = .GlobalEnv); assign('fmass',Vx[7],envir = .GlobalEnv); assign('vxage',Vx[8],envir = .GlobalEnv)
+    
     source("#VxGenG.R")
   } else {d<-matrix(0,steps,Mnage); 
           thetaS<-matrix(0,steps,Mnage);

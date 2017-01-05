@@ -31,14 +31,14 @@ cntry<-"China"
 
 #### Vaccine interventions  ####
 typen<-3 ## Number of vaccine types (PPI, PRI, PSI_LR)
-effI<-seq(0,100,10)/100   #efficacy for POI
-effD<-seq(0,100,10)/100   #efficacy for POD
+effInf<-seq(0,100,10)/100   #efficacy for POI
+effDis<-seq(0,100,10)/100   #efficacy for POD
 durs<-c(2,3,5,7,10,15,20,25,100) #duration of protection (yrs)
 cover<-0.8  #routine coverage
 coverM<-0.7 #mass campaign coverage
 vage<-12   #age at which the routine/first vaccination occurs
 fms<-10   #shortest frequency of mass campaigns (years)
-combn<-length(effI)*length(effD)*length(durs) ## Number of efficacy and duration combinations
+combn<-length(effInf)*length(effDis)*length(durs) ## Number of efficacy and duration combinations
 
 
 
@@ -94,42 +94,33 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
     
     count<-0;coms<-matrix(0,combn,3);
     #for each POI efficacy
-    for (vv in 1:length(effI)){
+    for (vv in 1:length(effInf)){
       # For each POD efficacy
-      for (zz in 1:length(effD)){
+      for (zz in 1:length(effDis)){
         # For each duration
         for (xx in 1:length(durs)){
           count<-count+1  
-          coms[count,]<-c(effI[vv],effD[zz],durs[xx])
-          ticI <- effI[vv]; ticD <- effD[zz];   toc <- durs[xx];   print(c(nn,ticI,ticD,toc))
+          coms[count,]<-c(effInf[vv],effDis[zz],durs[xx])
+          
+          ticI <- effInf[vv]; ticD <- effDis[zz];   toc <- durs[xx];   print(c(nn,ticI,ticD,toc))
         
           # Length of second input > 1 so triggers FitGo to do a vaccine scenario
           X<-FitGo(cntry,c(nn,cover,coverM,ticI,ticD,toc,fms,vage),c(p0,rmort,neta2,rmortTB,CDRscale,CDRscaleE,alpha),c(2,0.5,c(0.02,0.02,0.8,0.07)),c(1900,2050),0,C)  
           
           
-          if (nn == 2){vtp<-"OA_PRI"
+          if (nn == 1){vtp<-"PPI"
+          } else if (nn == 2){
+            vtp<-"PRI"
           } else if (nn == 3){
-            vtp<-"OA_PSI"
-          } else if (nn == 4){
-            vtp<-"OA_PPI"
-          } else if (nn == 5){
-            vtp<-"Ado_PRI"
-          } else if (nn == 6){
-            vtp<-"Ado_PSI"
-          } else if (nn == 7){
-            vtp<-"Ado_PPI"
-          } else if (nn == 8){
-            vtp<-"OA_PSIL"
-          } else if (nn == 9){
-            vtp<-"Ado_PSIL"
-          }
+            vtp<-"PSI_LR"
+          } 
           
-          vxtyp<-paste(vtp,"_",cov,"_",tic,"_",toc)
+          vxtyp<-paste(vtp,"_",ticI,"_",ticD,"_",toc)
           vacnames<-c(vacnames,vxtyp)
           
           #         # save in countries VXout for DALY calc       
           #         # save in big df for plot
-          eee<-cbind(X,nn,cov,tic,toc,count); colnames(eee)<-c(colnames(X),"type","cov","VE","dur","count")
+          eee<-cbind(X,nn,ticI,ticD,toc,count); colnames(eee)<-c(colnames(X),"type","VE_I","VE_D","dur","count")
           #dfvx<-rbind(dfvx,eee)
           #dfvx<-as.matrix(dfvx)
           rrun_dfvx<-rbind(rrun_dfvx,eee)
