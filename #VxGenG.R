@@ -34,7 +34,7 @@ if (yrintro < yearend){
   
   
   # MASS CAMPAIGNS of all ages above the routine vaccination age:  //Every fmass years from intro (likely 10 yrs), unless duration (D) longer//
-  if (effI!=0 | effD!=0) {
+ # if (effI!=0 | effD!=0) {
   
   if (D < fmass){spacing<-fmass} else {spacing<-D}
   
@@ -65,7 +65,7 @@ if (D <= (yearend-yrintro)){ ## D <- 100 if lifelong protection. If D is greater
   
  }
 }
-}
+#}
 
 
 ### setting theta ad d fordepending on vaccine tye modelled - theta is theta# (coverage), d is dv#  ###
