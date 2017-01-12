@@ -320,11 +320,11 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       new_actv_chk[i,2:Mnage] = new_actv_react[i,2:Mnage] + new_actv_inf[i,2:Mnage]
 
       #number of notifications defined as number detected. Have removed CoT from expression as is irrelevant to nnumber detected. e is scaling down of notification for NI as less likely to be detected.
-      new_notif[i,2:Mnage] = CDR[1:(Mnage-1)]*(new_I[i,2:Mnage] + e*new_NI[i,2:Mnage])
+      new_notif[i,2:Mnage] = CDR[2:(Mnage)]*(new_I[i,2:Mnage] + e*new_NI[i,2:Mnage])
 
-      R[i,2:Mnage] = R[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(I[i-1,1:(Mnage-1)] + NI[i-1,1:(Mnage-1)])*dt + CDR[1:(Mnage-1)]*CoT*(new_I[i,2:Mnage] + e*new_NI[i,2:Mnage]) - (r[1:(Mnage-1)] + g*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*R[i-1,1:(Mnage-1)]*dt 
-      I[i,2:Mnage] = I[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT)*(new_I[i,2:Mnage]) - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + ui[1:(Mnage-1)])*I[i-1,1:(Mnage-1)]*dt
-      NI[i,2:Mnage] = NI[i-1,1:(Mnage-1)] + ((1 - CDR[1:(Mnage-1)]*CoT*e)*new_NI[i,2:Mnage]) - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NI[i-1,1:(Mnage-1)]*dt                    
+      R[i,2:Mnage] = R[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(I[i-1,1:(Mnage-1)] + NI[i-1,1:(Mnage-1)])*dt + CDR[2:(Mnage)]*CoT*(new_I[i,2:Mnage] + e*new_NI[i,2:Mnage]) - (r[1:(Mnage-1)] + g*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*R[i-1,1:(Mnage-1)]*dt 
+      I[i,2:Mnage] = I[i-1,1:(Mnage-1)] + (1 - CDR[2:(Mnage)]*CoT)*(new_I[i,2:Mnage]) - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + ui[1:(Mnage-1)])*I[i-1,1:(Mnage-1)]*dt
+      NI[i,2:Mnage] = NI[i-1,1:(Mnage-1)] + ((1 - CDR[2:(Mnage)]*CoT*e)*new_NI[i,2:Mnage]) - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NI[i-1,1:(Mnage-1)]*dt                    
         
 
 
@@ -359,16 +359,16 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
                   
         new_NIv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*(1 - f[1:(Mnage-1)])*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:(Mnage-1)])*dt + ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*(1 - f[1:(Mnage-1)])*Lv[i-1,1:(Mnage-1)]*dt + (1-effD)*r[1:(Mnage-1)]*(1 - h[1:(Mnage-1)])*Rv[i-1,1:(Mnage-1)]*dt  
 
-        new_notifv[i,2:Mnage] = CDR[1:(Mnage-1)]*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage])
+        new_notifv[i,2:Mnage] = CDR[2:(Mnage)]*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage])
 
         new_actvv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*Sv[i-1,1:(Mnage-1)]*dt + (((1-effD)*v[1:(Mnage-1)]) + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*Lv[i-1,1:(Mnage-1)]*dt + (((1-effD)*r[1:(Mnage-1)]) + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*g)*Rv[i-1,1:(Mnage-1)]*dt
 
 
-        Rv[i,2:Mnage] = Rv[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(Iv[i-1,1:(Mnage-1)] + NIv[i-1,1:(Mnage-1)])*dt + CDR[1:(Mnage-1)]*CoT*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage]) - ((1-effD)*r[1:(Mnage-1)] + g*(1-effI)*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*Rv[i-1,1:(Mnage-1)]*dt 
+        Rv[i,2:Mnage] = Rv[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(Iv[i-1,1:(Mnage-1)] + NIv[i-1,1:(Mnage-1)])*dt + CDR[2:(Mnage)]*CoT*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage]) - ((1-effD)*r[1:(Mnage-1)] + g*(1-effI)*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*Rv[i-1,1:(Mnage-1)]*dt 
         
-        Iv[i,2:Mnage] = Iv[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT)*new_Iv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:((Mnage-1))] + ui[1:(Mnage-1)])*Iv[i-1,1:(Mnage-1)]*dt
+        Iv[i,2:Mnage] = Iv[i-1,1:(Mnage-1)] + (1 - CDR[2:(Mnage)]*CoT)*new_Iv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:((Mnage-1))] + ui[1:(Mnage-1)])*Iv[i-1,1:(Mnage-1)]*dt
         
-        NIv[i,2:Mnage] = NIv[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT*e)*new_NIv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NIv[i-1,1:(Mnage-1)]*dt   
+        NIv[i,2:Mnage] = NIv[i-1,1:(Mnage-1)] + (1 - CDR[2:(Mnage)]*CoT*e)*new_NIv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NIv[i-1,1:(Mnage-1)]*dt   
         
 
 
@@ -1175,7 +1175,11 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
   assign('cumuloutyr',cumuloutyr,envir=.GlobalEnv) 
   assign('CFR',CFR,envir=.GlobalEnv) 
 
-
+  ## checks ##
+  
+  # I and Iv by age and by year
+  chkI<-cbind(rowSums(I),I,rowSums(Iv),Iv)
+  assign('chkI',chkI,envir=.GlobalEnv)
 
 
 
