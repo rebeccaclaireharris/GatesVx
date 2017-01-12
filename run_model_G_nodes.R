@@ -30,16 +30,9 @@ cntry<-"China"
 
 
 #### Vaccine interventions  ####
-typen<-1 ## Number of vaccine types (PPI, PRI, PSI_LR)
-effInf<-seq(0,100,10)/100   #efficacy for POI
-effDis<-seq(0,100,10)/100   #efficacy for POD
-durs<-c(2,3,5,7,10,15,20,25,100) #duration of protection (yrs)
-cover<-0.8  #routine coverage
-coverM<-0.7 #mass campaign coverage
-vage<-12   #age at which the routine/first vaccination occurs
-fms<-10   #shortest frequency of mass campaigns (years)
-combn<-length(effInf)*length(effDis)*length(durs) ## Number of efficacy and duration combinations
 
+#source vaccine characteristics to be modelled
+source('#vx.R')
 
 
 # Run Vaccines and where to store
@@ -53,7 +46,7 @@ vaxgiveyr<-c()
 cumulvxyrM<-c()
 cumulvxyrI<-c()
 NumV<-c()
-inc2050<-c()
+inc2050<-matrix(0,(combn+1),10)
 mort2050<-c()
 inc2035<-c()
 mort2035<-c()
@@ -82,7 +75,7 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
   new_active<-cbind(TBAc,0,0)
   new_ac_age<-cbind(TBAc_age,0,0)
   new_mort<-cbind(TBMo,0,0)
-  inc2050<-rbind(TBI[151,])
+  inc2050[1,]<-c(TBI[151,],"baseline")
   mort2050<-rbind(TBM[151,])
   inc2035<-rbind(TBI[136,])
   mort2035<-rbind(TBM[136,])
@@ -135,14 +128,22 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
           NumV<-cbind(NumV,NV,nn,count)
           
           #outputting 2050 incidence rate
-          inc2050<-rbind(inc2050,TBI[151,])
+          inc2050[(count+1),]<-c(TBI[151,],vxtyp)
+          colnames(inc2050)<-c(colnames(TBI),"vx")
           mort2050<-rbind(mort2050,TBM[151,])
           
           #outputting 2035 incidence rate
           inc2035<-rbind(inc2035,TBI[136,])
           mort2035<-rbind(mort2035,TBM[136,])
           
+          ##checks
+          setwd(home);setwd('checks')
+          write.table(d,paste('d_',toc,'.csv',sep=""),sep=",",row.names=FALSE)
+          write.table(thetaV2,paste('thetaV2_',toc,'.csv',sep=""),sep=",",row.names=FALSE)
+          setwd(home)
+          
         }}}}
+
   #assign('dfvx',dfvx,envir=.GlobalEnv)
   assign('new_active',new_active,envir=.GlobalEnv)
   assign('new_ac_age',new_ac_age,envir=.GlobalEnv)
@@ -156,7 +157,10 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
   assign('vacnames',vacnames,envir=.GlobalEnv)
   assign('kkk',kkk,envir=.GlobalEnv)
 
-
+  #checks
+  # population size in 2050
+  rrun_dfvx[y1[-1]+300,1]
+  rrun_dfvx[y1[-1]+301,1]
   
   setwd("Vxoutput")
   write.table(new_active,paste('new_active_',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
@@ -164,15 +168,20 @@ if (C==1){kkk<-as.numeric(Sys.getenv("SGE_TASK_ID"))}
   write.table(NumV,paste('number_vaccinated_',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
   write.table(inc2050,paste('inc_rates_2050_',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
   write.table(mort2050,paste('mort_rates_2050_',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
-  write.table(inc2035,paste('inc_rates_20350',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
+  write.table(inc2035,paste('inc_rates_2035',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
   write.table(mort2035,paste('mort_rates_2035_',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
   write.table(rrun_dfvx,paste('rrun_dfvx_',kkk,'.csv',sep=""),sep=",",row.names=FALSE)
+  
+
   
   print(count)
   print(vacnames)
   setwd(home)
-  source('#NNV_clusterG.R')
+  #source('#NNV_clusterG.R')
   setwd(home)
   source('#%reduction_clusterG.R')
+
+print(rrun_dfvx[(y1+300),1], digits=20)
+
 
 
