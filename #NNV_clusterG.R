@@ -1,6 +1,6 @@
 #### NNV ####
 
-setwd("Vaccoutput")
+setwd("Vxoutput")
 
 ###cases averted ###
 print("typen")

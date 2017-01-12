@@ -113,7 +113,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
           thetaL<-matrix(0,steps,Mnage)
           thetaR<-matrix(0,steps,Mnage)
           vaccine<-0;#thetaH<-theta;
-          effI<-0;effD<-0;Dur<-0;
+          effI<-0;effD<-0;D<-0;
           coverage<-0;coverageM<-0;
           fmass<-0;vxage<-0
           }
@@ -309,8 +309,11 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
 
 
       new_I[i,2:Mnage] = lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*f[1:(Mnage-1)]*(S[i-1,1:(Mnage-1)] + g*R[i-1,1:(Mnage-1)])*dt + (v[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*x)*f[1:(Mnage-1)]*L[i-1,1:(Mnage-1)]*dt + r[1:(Mnage-1)]*h[1:(Mnage-1)]*R[i-1,1:(Mnage-1)]*dt + w*NI[i-1,1:(Mnage-1)]*dt
+
       new_I_noconv[i,2:Mnage] = lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*f[1:(Mnage-1)]*(S[i-1,1:(Mnage-1)] + g*R[i-1,1:(Mnage-1)])*dt + (v[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*x)*f[1:(Mnage-1)]*L[i-1,1:(Mnage-1)]*dt + r[1:(Mnage-1)]*h[1:(Mnage-1)]*R[i-1,1:(Mnage-1)]*dt
+
       new_NI[i,2:Mnage] = lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*(1 - f[1:(Mnage-1)])*(S[i-1,1:(Mnage-1)] + g*R[i-1,1:(Mnage-1)])*dt + (v[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*x)*(1 - f[1:(Mnage-1)])*L[i-1,1:(Mnage-1)]*dt + r[1:(Mnage-1)]*(1 - h[1:(Mnage-1)])*R[i-1,1:(Mnage-1)]*dt  
+      
       new_actv[i,2:Mnage] = lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*S[i-1,1:(Mnage-1)]*dt + (v[1:(Mnage-1)] +lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*x)*L[i-1,1:(Mnage-1)]*dt + (r[1:(Mnage-1)] + lambda[i-1,1:(Mnage-1)]*p[1:(Mnage-1)]*g)*R[i-1,1:(Mnage-1)]*dt
 
 
@@ -349,7 +352,7 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         
         Lv[i,2:Mnage] = Lv[i-1,1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*(1 - ((1-effD)*p[1:(Mnage-1)]))*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:(Mnage-1)])*dt - ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x + u[1:(Mnage-1)])*Lv[i-1,1:(Mnage-1)]*dt   
         
-        new_Iv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*f[1:(Mnage-1)]*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:((Mnage-1))])*dt + ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*f[1:((Mnage-1))]*Lv[i-1,1:(Mnage-1)]*dt + (1-effD)*r[1:(Mnage-1)]*h[1:(Mnage-1)]*Rv[i-1,1:(Mnage-1)]*dt + w*NIv[i-1,1:(Mnage-1)]*dt
+        new_Iv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*f[1:(Mnage-1)]*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:((Mnage-1))])*dt + ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*f[1:(Mnage-1)]*Lv[i-1,1:(Mnage-1)]*dt + (1-effD)*r[1:(Mnage-1)]*h[1:(Mnage-1)]*Rv[i-1,1:(Mnage-1)]*dt + w*NIv[i-1,1:(Mnage-1)]*dt
         
         new_Iv_noconv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*f[1:(Mnage-1)]*(Sv[i-1,1:(Mnage-1)] + g*Rv[i-1,1:(Mnage-1)])*dt + ((1-effD)*v[1:(Mnage-1)] + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*f[1:(Mnage-1)]*Lv[i-1,1:(Mnage-1)]*dt + (1-effD)*r[1:(Mnage-1)]*h[1:(Mnage-1)]*Rv[i-1,1:(Mnage-1)]*dt
                     
@@ -361,11 +364,11 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         new_actvv[i,2:Mnage] = ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*Sv[i-1,1:(Mnage-1)]*dt + (((1-effD)*v[1:(Mnage-1)]) + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*x)*Lv[i-1,1:(Mnage-1)]*dt + (((1-effD)*r[1:(Mnage-1)]) + ((1-effI)*lambda[i-1,1:(Mnage-1)])*((1-effD)*p[1:(Mnage-1)])*g)*Rv[i-1,1:(Mnage-1)]*dt
 
 
-        Rv[i,2:Mnage] = Rv[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(Iv[i-1,1:((Mnage-1))] + NIv[i-1,1:((Mnage-1))])*dt + CDR[1:(Mnage-1)]*CoT*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage]) - ((1-effD)*r[1:(Mnage-1)] + g*(1-effI)*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*Rv[i-1,1:(Mnage-1)]*dt 
+        Rv[i,2:Mnage] = Rv[i-1,1:(Mnage-1)] + n[1:(Mnage-1)]*(Iv[i-1,1:(Mnage-1)] + NIv[i-1,1:(Mnage-1)])*dt + CDR[1:(Mnage-1)]*CoT*(new_Iv[i,2:Mnage] + e*new_NIv[i,2:Mnage]) - ((1-effD)*r[1:(Mnage-1)] + g*(1-effI)*lambda[i-1,1:(Mnage-1)] + u[1:(Mnage-1)])*Rv[i-1,1:(Mnage-1)]*dt 
         
         Iv[i,2:Mnage] = Iv[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT)*new_Iv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:((Mnage-1))] + ui[1:(Mnage-1)])*Iv[i-1,1:(Mnage-1)]*dt
         
-        NIv[i,2:Mnage] = NIv[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT*e)*new_NIv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NIv[i-1,1:((Mnage-1))]*dt   
+        NIv[i,2:Mnage] = NIv[i-1,1:(Mnage-1)] + (1 - CDR[1:(Mnage-1)]*CoT*e)*new_NIv[i,2:Mnage] - (n[1:(Mnage-1)] + u[1:(Mnage-1)] + uni[1:(Mnage-1)] + w)*NIv[i-1,1:(Mnage-1)]*dt   
         
 
 
@@ -405,14 +408,15 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         NIv2 = NIv[i,] - NIv[i,]*(d[i,])
       
       ##calculate the number just vaccinated before the S gets replaced by S2 etc. Everyone except active cases included.
+      if (vaccine==1){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
       if (vaccine==2){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
       if (vaccine==3){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
-      if (vaccine==4){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
-      if (vaccine==5){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
-      if (vaccine==6){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
-      if (vaccine==7){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
-      if (vaccine==8){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
-      if (vaccine==9){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
+#       if (vaccine==4){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
+#       if (vaccine==5){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
+#       if (vaccine==6){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
+#       if (vaccine==7){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
+#       if (vaccine==8){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV2[i,]}
+#       if (vaccine==9){num_vac[i,] = (S[i,] + L[i,] + R[i,] + Sv[i,] + Lv[i,] + Rv[i,])*thetaV4[i,]}
 
         
       #replace S etc with the new number post-vaccination campaign and waning
@@ -1196,7 +1200,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
            TBPb[,1],TBPb[,2],TBPb[,3], TBPb[,4], TBPb[,5], TBPb[,6],TBPb[,7],
            TBPI[,1],TBPI[,2],TBPI[,3], TBPI[,4], TBPI[,5],  TBPI[,6], TBPI[,7],TBPI[,8],TBPI[,9], TBPI[,10], TBPI[,11],  TBPI[,12], TBPI[,13], TBPI[,14],
            PSIZEy[,1],PSIZEy[,2], PSIZEy[,3], PSIZEy[,4], PSIZEy[,5], PSIZEy[,6], PSIZEy[,7], PSIZEy[,8], PSIZEy[,9], PSIZEy[,10], PSIZEy[,11], PSIZEy[,12], PSIZEy[,13], PSIZEy[,14], PSIZEy[,15], PSIZEy[,16], PSIZEy[,17], PSIZEy[,18], PSIZEy[,19],PSIZEy[,20], PSIZEy[,21], PSIZEy[,22], PSIZEy[,23],
-           TBI[,8], TBI[,9],TBM[,10],TBM[,11],TBPb[,8],PSIZEy[,24],TBRa[,1],TBRa[,2],TBRa[,3],TBRa[,4],TBRa[,5],TBRi[,1],TBRi[,2],TBRi[,3],TBRi[,4],TBRi[,5], TBPb[,9],rowSums(Iv),rowSums(NIv))
+           TBI[,8], TBI[,9],TBM[,10],TBM[,11],TBPb[,8],PSIZEy[,24],TBRa[,1],TBRa[,2],TBRa[,3],TBRa[,4],TBRa[,5],TBRi[,1],TBRi[,2],TBRi[,3],TBRi[,4],TBRi[,5], TBPb[,9],rowSums(Iv),rowSums(NIv),rowSums(new_Iv),rowSums(new_NIv), rowSums(new_Iv_noconv), rowSums(new_notifv))
   colnames(X)<-c("PSIZE","S","Births","I","NI","L","R","new_I","new_NI","new_I_react","new_NI_react", "Sv","Lv","Rv",
                  "TBItot","TBI0-14","TBI15-54","TBI55-64","TBI65+","TBI55+","TBI<55",
                  "TBNtot","TBN0-14","TBN15-54","TBN55-64","TBN65+","TBN55+","TBN<55",
@@ -1205,7 +1209,7 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
                  "TBPbtot","TBPb0-14", "TBPb15-29", "TBPb30-44", "TBPb45-59", "TBPb60+","TBPb55+", 
                  "TBPItot","TBPI0-14", "TBPI15-54", "TBPI55-64", "TBPI65+", "TBPI55+", "TBPI5-9", "TBPI10-19", "TBPI20-29", "TBPI30-39", "TBPI40-49", "TBPI50-59", "TBPI60-69", "TBPI70+",
                  "YearPsizetot", "YearPsize0-14", "YearPsize15-54", "YearPsize55-64", "YearPsize65+", "YearPsize15-59", "YearPsize15-29", "YearPsize30-44", "YearPsize45-59", "YearPsize60+", "YearPsize55+", "YearPsize5-9", "YearPsize10-19", "YearPsize20-29", "YearPsize30-39", "YearPsize40-49", "YearPsize50-59", "YearPsize60-69", "YearPsize70+","YearPsize55-74", "YearPsize75+", "YearPsize15-24","YearPsize25-54",
-                 "TBI15-24","TBI25-54","TBM15-24","TBM25-54","TBPb15+","YearPsize15plus","TBRatot","TBRa0-14","TBRa15-54","TBRa55-64","TBRa65+","TBRitot","TBRi0-14","TBRi15-54","TBRi55-64","TBRi65+", "TBPb30-59","Iv","NIv")
+                 "TBI15-24","TBI25-54","TBM15-24","TBM25-54","TBPb15+","YearPsize15plus","TBRatot","TBRa0-14","TBRa15-54","TBRa55-64","TBRa65+","TBRitot","TBRi0-14","TBRi15-54","TBRi55-64","TBRi65+", "TBPb30-59","Iv","NIv","new_Iv","new_NIv","new_Iv_noconv","new_notifv")
   #print("X")
 #X<-data.frame(X)
   # To show
