@@ -240,7 +240,6 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
     e_bb<-20887
     e_pop<-984016
 
-    
     fertdrop<-1990
     if (k < fertdrop){ br<-e_bb/e_pop
                       if (k == year1){B<-round(br*psize[1]); bv<-c(bv,B);brate<-c(brate,br)}
@@ -438,7 +437,14 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
       psize55plus[i]<-sum(S[i,56:Mnage],L[i,56:Mnage],R[i,56:Mnage],I[i,56:Mnage],NI[i,56:Mnage],Sv[i,56:Mnage],Lv[i,56:Mnage],Rv[i,56:Mnage],Iv[i,56:Mnage],NIv[i,56:Mnage])
       psize55minus[i]<-sum(S[i,1:55],L[i,1:55],R[i,1:55],I[i,1:55],NI[i,1:55],Sv[i,1:55],Lv[i,1:55],Rv[i,1:55],Iv[i,1:55],NIv[i,1:55])
 
-    
+      # checking coverage
+      psizeVX[i]<-sum(Sv[i,],Lv[i,],Rv[i,],Iv[i,],NIv[i,])
+      psizeVX9[i]<-sum(Sv[i,10],Lv[i,10],Iv[i,10],NIv[i,10],Rv[i,10])
+      psizeVX9100[i]<-sum(Sv[i,10:101],Lv[i,10:101],Iv[i,10:101],NIv[i,10:101],Rv[i,10:101])
+      psizeNOVX[i]<-sum(S[i,],L[i,],R[i,],I[i,],NI[i,])
+      psizeNOVX9[i]<-sum(S[i,10],L[i,10],I[i,10],NI[i,10],R[i,10])
+      psizeNOVX9100[i]<-sum(S[i,10:101],L[i,10:101],I[i,10:101],NI[i,10:101],R[i,10:101])
+      
       #ages needed to fit to mort  and prevalence as have different groupings
       psize1559[i]<-sum(S[i,16:60],L[i,16:60],R[i,16:60],I[i,16:60],NI[i,16:60],Sv[i,16:60],Lv[i,16:60],Rv[i,16:60],Iv[i,16:60],NIv[i,16:60])
       psize1529[i]<-sum(S[i,16:30],L[i,16:30],R[i,16:30],I[i,16:30],NI[i,16:30],Sv[i,16:30],Lv[i,16:30],Rv[i,16:30],Iv[i,16:30],NIv[i,16:30])
@@ -684,6 +690,13 @@ FitGo <- function(cntry,Vx,Fit,InitV,TimeScale,Plot,C){
         psize55plus[i]<-sum(S[i,56:Mnage],L[i,56:Mnage],R[i,56:Mnage],I[i,56:Mnage],NI[i,56:Mnage],Sv[i,56:Mnage],Lv[i,56:Mnage],Rv[i,56:Mnage],Iv[i,56:Mnage],NIv[i,56:Mnage])
         psize55minus[i]<-sum(S[i,1:55],L[i,1:55],R[i,1:55],I[i,1:55],NI[i,1:55],Sv[i,1:55],Lv[i,1:55],Rv[i,1:55],Iv[i,1:55],NIv[i,1:55])
   
+      # checking coverage
+      psizeVX[i]<-sum(Sv[i,],Lv[i,],Rv[i,],Iv[i,],NIv[i,])
+      psizeVX9[i]<-sum(Sv[i,10],Lv[i,10],Iv[i,10],NIv[i,10],Rv[i,10])
+      psizeVX9100[i]<-sum(Sv[i,10:101],Lv[i,10:101],Iv[i,10:101],NIv[i,10:101],Rv[i,10:101])
+      psizeNOVX[i]<-sum(S[i,],L[i,],R[i,],I[i,],NI[i,])
+      psizeNOVX9[i]<-sum(S[i,10],L[i,10],I[i,10],NI[i,10],R[i,10])
+      psizeNOVX9100[i]<-sum(S[i,10:101],L[i,10:101],I[i,10:101],NI[i,10:101],R[i,10:101])
       
         
       
@@ -1007,6 +1020,13 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
           NV[(k-year1+1),1]<-sum(num_vac[i1:i2,])
 
 
+          COVtot[(k-year1+1),1]<-100*mean(psizeVX[i1:i2])/mean(psize[i1:i2])
+          COVtottest[(k-year1+1),1]<-100*mean(psizeVX[i1:i2])/(sum(mean(psizeVX[i1:i2]),mean(psizeNOVX[i1:i2])))
+          COV9[(k-year1+1),1]<-100*mean(psizeVX9[i1:i2])/(sum(mean(psizeVX9[i1:i2]),mean(psizeNOVX9[i1:i2])))
+          COV9100[(k-year1+1),1]<-100*mean(psizeVX9100[i1:i2])/(sum(mean(psizeVX9100[i1:i2]),mean(psizeNOVX9100[i1:i2])))
+         
+
+
 #           to be able to do NNV by yr
 #           if (k>=2025) {
 #           vaccgiveyr[,(k-2025+1)]<-sum(VX[i1:i2,1])
@@ -1113,6 +1133,14 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
   assign('psize1524',psize1524,envir=.GlobalEnv)
   assign('psize2554',psize2554,envir=.GlobalEnv)
   assign('psize15plus',psize15plus,envir=.GlobalEnv)
+  assign('COVtot',COVtot,envir=.GlobalEnv)
+  assign('COVtottest',COVtot,envir=.GlobalEnv)
+  assign('COV9',COV9,envir=.GlobalEnv)
+  assign('COV9100',COV9100,envir=.GlobalEnv)
+  assign('psizeVX',psizeVX,envir=.GlobalEnv)
+  assign('psizeVX9100',psizeVX,envir=.GlobalEnv)
+  assign('psizeNOVX9100',psizeNOVX,envir=.GlobalEnv)
+  assign('psizeVX9',psizeVX,envir=.GlobalEnv)
 
 
 
@@ -1175,11 +1203,53 @@ TBPI[(k-year1+1),1]<-100*(((sum(L[i1,])/psize[i1])+(sum(L[i2,])/psize[i2]))/2)
   assign('cumuloutyr',cumuloutyr,envir=.GlobalEnv) 
   assign('CFR',CFR,envir=.GlobalEnv) 
 
-  ## checks ##
-  
-  # I and Iv by age and by year
-  chkI<-cbind(rowSums(I),I,rowSums(Iv),Iv)
-  assign('chkI',chkI,envir=.GlobalEnv)
+#   ## checks ##
+#   
+#   # I and Iv by age and by year
+#   chkI<-cbind(rowSums(I),I,rowSums(Iv),Iv)
+#   
+#   chrtI<-c(I[251,10],I[252,10],I[253,11],I[254,11],I[255,12],I[256,12],I[257,13],I[258,13],I[259,14],I[260,14],I[261,15],I[262,15],I[263,16],I[264,16],I[265,17],I[266,17],I[267,18],I[268,18],I[269,19],I[270,19],I[271,20],I[272,20],I[273,21],I[274,21],I[275,22],I[276,22],I[277,23],I[278,23],I[279,24],I[280,24],I[281,25],I[282,25],I[283,26],I[284,26],I[285,27],I[286,27],I[287,28],I[288,28],I[289,29],I[290,29],I[291,30],I[292,30],I[293,31],I[294,31],I[295,32],I[296,32],I[297,33],I[298,33],I[299,34],I[300,34],I[301,35],I[302,35])
+# 
+# chrtIv<-c(Iv[251,10],Iv[252,10],Iv[253,11],Iv[254,11],Iv[255,12],Iv[256,12],Iv[257,13],Iv[258,13],Iv[259,14],Iv[260,14],Iv[261,15],Iv[262,15],Iv[263,16],Iv[264,16],Iv[265,17],Iv[266,17],Iv[267,18],Iv[268,18],Iv[269,19],Iv[270,19],Iv[271,20],Iv[272,20],Iv[273,21],Iv[274,21],Iv[275,22],Iv[276,22],Iv[277,23],Iv[278,23],Iv[279,24],Iv[280,24],Iv[281,25],Iv[282,25],Iv[283,26],Iv[284,26],Iv[285,27],Iv[286,27],Iv[287,28],Iv[288,28],Iv[289,29],Iv[290,29],Iv[291,30],Iv[292,30],Iv[293,31],Iv[294,31],Iv[295,32],Iv[296,32],Iv[297,33],Iv[298,33],Iv[299,34],Iv[300,34],Iv[301,35],Iv[302,35])
+# 
+# 
+# #   chrtIv<-matrix(0,2,52)
+# #   chrtI<-matrix(0,2,52)
+# #   print(I[(251),(9)])
+# #      print(chrtIv)
+# #      print(chrtI)
+# #   countup<-0
+# # 
+# #   for (jj in 1:26){
+# #     
+# #    for (ii in 1:2){
+# #      countup<-countup+1
+# #      xyz<-Iv[(250+ii+2*jj-2),(vxage+jj-1)]
+# #      wxy<-I[(250+ii+2*jj-2),(vxage+jj-1)]
+# #      chrtIv[2,(ii+2*jj-2)]<-Iv[(250+ii+2*jj-2),(vxage+jj-1)]
+# #      chrtIv[1,(ii+2*jj-2)]<-countup
+# #      chrtI[1,(ii+2*jj-2)]<-countup
+# #      chrtI[2,(ii+2*jj-2)]<-I[(250+ii+2*jj-2),(vxage+jj-1)]
+# #     
+# #      print(countup)
+# #      print(I[(251),(9)])
+# #      print(I[(250+ii+2*jj-2),(vxage+jj-1)])
+# #      print(xyz)
+# #      print(wxy)
+# #      print(chrtIv)
+# #      print(chrtI)
+# #    }}
+#   
+#       #dupyr<-rep((seq((vxage+1),(vxage+26),1)),each=2)
+# 
+# 
+#   
+# 
+#   
+#   
+#   assign('chkI',chkI,envir=.GlobalEnv)
+#   assign('chrtI',chrtI,envir=.GlobalEnv)
+#   assign('chrtIv',chrtIv,envir=.GlobalEnv)
 
 
 

@@ -90,6 +90,12 @@ psize1524<-matrix(0,steps,1)
 psize2554<-matrix(0,steps,1)
 psize15plus<-matrix(0,steps,1)
 
+psizeVX<-matrix(0,steps,1)
+psizeVX9<-matrix(0,steps,1)
+psizeVX9100<-matrix(0,steps,1)
+psizeNOVX<-matrix(0,steps,1)
+psizeNOVX9<-matrix(0,steps,1)
+psizeNOVX9100<-matrix(0,steps,1)
 
 
 
@@ -198,6 +204,11 @@ TBAc<-matrix(0,(yearend-year1+1),1)
 TBAc_age<-matrix(0,(yearend-year1+1),6)
 TBMo<-matrix(0,(yearend-year1+1),1)
 NV<-matrix(0,(yearend-year1+1),1)
+
+COVtot<-matrix(0,(yearend-year1+1),1)
+COVtottest<-matrix(0,(yearend-year1+1),1)
+COV9<-matrix(0,(yearend-year1+1),1)
+COV9100<-matrix(0,(yearend-year1+1),1)
 
 colnames(TBI)<-c("All ages","0-14", "15-54", "55-64", "65+", "55+", "<55","15-24","25-54")
 colnames(TBN)<-c("All ages","0-14", "15-54", "55-64", "65+","55+", "<55")
