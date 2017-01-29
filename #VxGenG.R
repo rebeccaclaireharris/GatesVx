@@ -58,11 +58,21 @@ if (D <= (yearend-yrintro)){ ## D <- 100 if lifelong protection. If D is greater
   massexityr<-massvxyr+(D*(1/dt))
   massexityr<-massexityr[massexityr<=(yearend-year1+1)*(1/dt)]
   
+  #removes those who vere mass vaccinated after duration of protections
   dV2[massexityr,(vxage+2+D):Mnage]<-1
   
-  dV2[(startyr[-1:-D]),(vxage+1+D)]<-1
-
+  #those receiving routine vaccination will also be included in mass campaigns, so instead of waning at age vxage+D they wane at D years after they receive mass vaccination. The previous code was removingthose who had received mass vacination during the ages between vxage and vxage+D, so added in changing those yrs to 0 so that not removing them too early
   
+  dropyrs<-c()
+  for (i in 1:length(massvxyr)){
+  dropyrs<-c(dropyrs,((massvxyr[i]+1):min(steps,(massvxyr[i]+((D-1)/dt)))))
+  }
+    
+#   startyr<-startyr[startyr != dropyrs]
+  
+  dV2[startyr,(vxage+1+D)]<-1
+  dV2[dropyrs,(vxage+1+D)]<-0
+
  }
 }
 #}
