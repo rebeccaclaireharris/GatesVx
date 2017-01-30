@@ -1,4 +1,7 @@
 ### Heatmaps ####
+library(plyr)
+library(grid)
+library(ggplot2)
 
 ## have already calculated the % reduction in incidence and mortality for each run (all age and by age) and stored in 2050_reduction_incidence_kkk etc. Is stored for 2050 as primary outcome, and 2035 as secondary outcome. ##
 
@@ -20,7 +23,7 @@ if (C == 1){home<-"/home/lsh355020/China_Gates/"}
 setwd(vaccin)
 
 #number runs
-rrun<-11
+rrun<-5
 
 #source vx characteristics so know # of vaccine types
 setwd(home)
@@ -36,7 +39,7 @@ RImatrixM<-c()
 
 ## call in matrices for reduction in incidence and mortality
 
-for (xx in 10:rrun){
+for (xx in 1:rrun){
   
   print(xx)
 RIcall<-t(read.csv(paste("2050_reduction_incidence_",xx,".csv", sep='')))
@@ -107,15 +110,14 @@ my_pal<-brewer.pal(11,"Spectral")
 use_pal<-colorRampPalette(my_pal)
 
 
-chars2029<-subset(RImatrix,redu>=20 & redu<30)
+#chars2029<-subset(RImatrix,redu>=20 & redu<30)
 
 
 
 groups<-c("PPI","PRI","PSI")
 
-
 #groups (PPI etc) loop
-for (ig in 1:3){
+for (ig in 1:typen){
   
   #durations loop
     
@@ -127,85 +129,63 @@ for (ig in 1:3){
   if (typen>=3) {RI50_PSI<-subset(med_RI,type==3)}
   
   #set lists of efficacy against inf and disease
-  y<-effDis
-  x<-effInf 
+  y<-effInf*100
+  x<-effDis*100
   
-  #subset the above 3 data frames to give data set by duration of protection (as each will be plotted separately, so no need to have them in the same ata frame)
+  #subset the above 3 data frames to give data set by duration of protection (as each will be plotted separately, so no need to have them in the same data frame)
   for (hh in 1:length(durs)){
     
-    if (typen>=1) assign(paste0("RI50_PPI_D", durs[hh]), subset(RI50_PPI,dur==durs[hh]))    
-    if (typen>=2) assign(paste0("RI50_PRI_D", durs[hh]), subset(RI50_PRI,dur==durs[hh]))    
-    if (typen>=3) assign(paste0("RI50_PSI_D", durs[hh]), subset(RI50_PSI,dur==durs[hh]))    
+    if (ig==1) assign(paste0("RI50_PPI_D", durs[hh]), subset(RI50_PPI,dur==durs[hh]))    
+    if (ig==2) assign(paste0("RI50_PRI_D", durs[hh]), subset(RI50_PRI,dur==durs[hh]))    
+    if (ig==3) assign(paste0("RI50_PSI_D", durs[hh]), subset(RI50_PSI,dur==durs[hh]))    
   
     
-    
+    #open plot file
      png(paste(vaccout,"/A.plot/",groups[ig],"_",durs[hh],"_heatmap.png",sep=""), width = 6, height = 6, units = 'in', res = 600)
 
-  #call in each duration and get %reduction data amd greate a matrix of [VED,VEI]
-  z<- get(paste0("RI50_PPI_D",durs[hh]))
-  z<-matrix(z[,1],  nrow=length(effInf),ncol=length(effDis))
+  #call in each duration and get %reduction data amd create a matrix of [VEI,VED]
+  z<- get(paste0("RI50_",groups[ig],"_D",durs[hh]))
+  z<-matrix(z[,1],  nrow=length(effDis),ncol=length(effInf),byrow=TRUE)
       
   ctlns <- contourLines(x, y, z, levels=c(0))
-  print(filled.contour(x,y,z,xlab="Efficacy against Disease",ylab="Efficacy against Infection",levels=seq(0,100,by=10),color=use_pal,main=paste(groups[ig]," vaccine providing ",durs[hh],"years of protection",sep="")))
+  
+  #produce plot
+  print(filled.contour(x,y,z,xlab="Vaccine efficacy against infection (%)",ylab="Vaccine efficacy against disease (%)",levels=seq(0,100,by=10),color=use_pal,main=paste("Incidence rate reduction in 2050 compared to no new vaccine\nbaseline for a ",groups[ig]," vaccine providing ",durs[hh]," years protection",sep=""),cex.main=0.9,key.title = title(main = "IRR\n(%)",cex.main=0.9)))
+  #close out plot
   dev.off()   
     
   }
 }
   
 
- plot.axes={axis(1); axis(2);sapply(1, function(x) lines(ctlns[[x]][[2]], ctlns[[x]][[3]], lwd=1,lty=2))} 
+#consider adding filled.contour3 to have panel of plots with one range on it
 
-  png(paste(start_dir,"/Results/All/A.plot/",groups[ig],"_CE_Adult.png",sep=""), width = 6, height = 6, units = 'in', res = 600)
-  z<-matrix(dadu$CEvx,nrow=5,ncol=6)
-  ctlns <- contourLines(x, y, z, levels=c(0))
-  print(filled.contour(x,y,z,xlab="efficacy",ylab="duration",levels=seq(-1,40,by=0.41),color=use_pal,main=paste(groups[ig]," Adult",sep=""),
-                       plot.axes={axis(1); axis(2);sapply(1, function(x) lines(ctlns[[x]][[2]], ctlns[[x]][[3]], lwd=1,lty=2))}))
-  dev.off()
-
-}
+### then need a plot to demonstrate the uncertainty in the estimates.
+## cross section across a given VE_D? Or high/low VE and durations? VE 20/100 and dur 5/10
 
 
+"219" = "VE_I 20%\nVE_D 20%\nDur 5yr", "221" = "VE_I 20%\nVE_D 20%\nDur 10yr","291" = "VE_I 20%\nVE_D 100%\nDur 5yr","293" = "VE_I 20%\nVE_D 100%\nDur 10yr","1011" = "VE_I 100%\nVE_D 20%\nDur 5yr","1013" = "VE_I 100%\nVE_D 20%\nDur 10yr","1083" = "VE_I 100%\nVE_D 100%\nDur 5yr","1085" = "VE_I 100%\nVE_D 100%\nDur 10yr"
 
 
+assign("RI50_UA", subset(med_RI,(dur==5 | dur==10) & (VE_I==0.2 | VE_I==1) & (VE_D==0.2 | VE_D==1))) 
 
-#groups (PPI etc) loop
-for (ig in 1:3){
-  
-  #durations loop
-    
-  #subset data on type of vaccine ppi/psi/pri. If statements for if not all types are being run
-  
-  med_RI<-as.data.frame(med_RI)
-  if (typen>=1) {RI50_PPI<-subset(med_RI,type==1)}
-  if (typen>=2) {RI50_PRI<-subset(med_RI,type==2)}
-  if (typen>=3) {RI50_PSI<-subset(med_RI,type==3)}
-  
-  #set lists of efficacy against inf and disease
-  y<-effDis
-  x<-effInf 
-  
-  #subset the above 3 data frames to give data set by duration of protection (as each will be plotted separately, so no need to have them in the same ata frame)
-  for (hh in 1:length(durs)){
-    
-    if (typen>=1) assign(paste0("RI50_PPI_D", durs[hh]), subset(RI50_PPI,dur==durs[hh]))    
-    if (typen>=2) assign(paste0("RI50_PRI_D", durs[hh]), subset(RI50_PRI,dur==durs[hh]))    
-    if (typen>=3) assign(paste0("RI50_PSI_D", durs[hh]), subset(RI50_PSI,dur==durs[hh]))    
-  
-    
-    
-     png(paste(vaccout,"/A.plot/",groups[ig],"_",durs[hh],"_heatmap.png",sep=""), width = 6, height = 6, units = 'in', res = 600)
+dodge<-position_dodge(width=0.9)
 
-  #call in each duration and get %reduction data amd greate a matrix of [VED,VEI]
-  z<- get(paste0("RI50_PPI_D",durs[hh]))
-  z<-matrix(z[,1],  nrow=length(effInf),ncol=length(effDis))
-      
-  ctlns <- contourLines(x, y, z, levels=c(0))
-  print(filled.contour(x,y,z,xlab="Efficacy against Disease",ylab="Efficacy against Infection",levels=seq(0,100,by=10),color=use_pal,main=paste(groups[ig]," vaccine providing ",durs[hh],"years of protection",sep="")))
-  dev.off()   
-    
-  }
-}
-  
+ggRI_UA<-ggplot(RI50_UA, aes(x=factor(count), y=median, fill=factor(type))) + geom_bar(stat="identity",position=dodge) +
+        #scale_fill_manual(values=cbP4) +
+        scale_x_discrete("Vaccine characteristics", labels = c("219" = "VE_I 20%\nVE_D 20%\nDur 5yr", "221" = "VE_I 20%\nVE_D 20%\nDur 10yr","291" = "VE_I 20%\nVE_D 100%\nDur 5yr","293" = "VE_I 20%\nVE_D 100%\nDur 10yr","1011" = "VE_I 100%\nVE_D 20%\nDur 5yr","1013" = "VE_I 100%\nVE_D 20%\nDur 10yr","1083" = "VE_I 100%\nVE_D 100%\nDur 5yr","1085" = "VE_I 100%\nVE_D 100%\nDur 10yr")) +
+        geom_errorbar(aes(ymin=RI50_UA$min, ymax=RI50_UA$max, width=0.25),position=dodge, width=0.25) +
+        theme_classic() +
+        theme(legend.position="bottom", legend.title =  element_blank(), axis.text.x  = element_text(vjust=0.5, size=8), axis.line.x = element_line(color="black", size=0.5),axis.line.y = element_line(color="black", size=0.5)) + 
+        scale_y_continuous(expand=c(0,0)) +
+        scale_fill_discrete(labels=c("PPI", "PRI", "PSI")) +
+        labs(x="Vaccine",y="Reduction in TB incidence in 2050 compared to no vaccine scenario (%)") 
+
+g3 <- ggplot_gtable(ggplot_build(ggRI_UA))
+g3$layout$clip[g3$layout$name == "panel"] <- "off"
+grid.draw(g3)
+
+if(C==0){ggsave("ggRI_UA.pdf", plot = g3)}
 
 
 
@@ -214,11 +194,7 @@ for (ig in 1:3){
 
 
 
-
-
-
-
-
+### UNUSED CODE ###
 
 # 
 # #down select to the durations of interest
